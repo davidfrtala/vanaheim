@@ -1,0 +1,38 @@
+{
+  "name": "storytelly-api",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/storytelly-api/src",
+  "tags": [],
+  "targets": {
+    "supabase": {
+      "executor": "nx:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "../../node_modules/.bin/supabase",
+        "cwd": "{workspaceRoot}/apps/storytelly-api"
+      }
+    },
+    "start": {
+      "executor": "nx:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "nx run storytelly-api:supabase start"
+      }
+    },
+    "stop": {
+      "executor": "nx:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "nx run storytelly-api:supabase stop"
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/storytelly-api/**/*.ts"]
+      }
+    }
+  }
+}
