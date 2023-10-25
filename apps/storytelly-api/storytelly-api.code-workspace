@@ -5,13 +5,20 @@
       "path": "./"
     },
     {
+      "name": "frontend",
+      "path": "../storytelly"
+    },
+    {
       "name": "supabase-functions",
       "path": "supabase/functions"
     }
   ],
   "settings": {
     "files.exclude": {
-      "supabase/functions/": true
-    }
+      "node_modules/": true,
+      "supabase/functions/": true,
+      "../storytelly": true
+    },
+    "deno.importMap": "./supabase/functions/import_map.json"
   }
 }
