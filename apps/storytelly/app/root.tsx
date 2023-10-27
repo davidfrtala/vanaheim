@@ -7,13 +7,12 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
-  useRouteError,
-  isRouteErrorResponse,
 } from '@remix-run/react';
-import { ChakraProvider, Box, Heading } from '@chakra-ui/react';
-import { theme } from './theme';
+import { Theme } from '@radix-ui/themes';
+import styles from '@radix-ui/themes/styles.css';
 
 export const links: LinksFunction = () => [
+  { rel: 'stylesheet', href: styles },
   ...(cssBundleHref ? [{ rel: 'stylesheet', href: cssBundleHref }] : []),
 ];
 
@@ -39,44 +38,16 @@ function Document({ children }: { children: React.ReactNode }) {
 export default function App() {
   return (
     <Document>
-      <ChakraProvider theme={theme}>
+      <Theme
+        accentColor="mint"
+        grayColor="gray"
+        panelBackground="solid"
+        scaling="100%"
+        radius="full"
+        appearance="dark"
+      >
         <Outlet />
-      </ChakraProvider>
+      </Theme>
     </Document>
-  );
-}
-
-export function ErrorBoundary() {
-  const error = useRouteError();
-
-  // when true, this is what used to go to `CatchBoundary`
-  if (isRouteErrorResponse(error)) {
-    return (
-      <Document>
-        <ChakraProvider>
-          <Box>
-            <Heading as="h1" bg="purple.600">
-              [CatchBoundary]: {error.status} {error.statusText}
-            </Heading>
-            <Heading as="h2">{error.data.message}</Heading>
-          </Box>
-        </ChakraProvider>
-      </Document>
-    );
-  }
-
-  // Don't forget to typecheck with your own logic.
-  // Any value can be thrown, not just errors!
-  let errorMessage = 'Unknown error';
-  // if (isDefinitelyAnError(error)) {
-  //   errorMessage = error.message;
-  // }
-
-  return (
-    <div>
-      <h1>Uh oh ...</h1>
-      <p>Something went wrong.</p>
-      <pre>{errorMessage}</pre>
-    </div>
   );
 }

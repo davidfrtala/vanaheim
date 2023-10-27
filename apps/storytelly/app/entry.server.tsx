@@ -6,15 +6,11 @@
 
 import { PassThrough } from 'node:stream';
 
-import { renderToPipeableStream } from 'react-dom/server';
 import type { AppLoadContext, EntryContext } from '@remix-run/node';
 import { createReadableStreamFromReadable } from '@remix-run/node';
 import { RemixServer } from '@remix-run/react';
 import isbot from 'isbot';
-
-import createEmotionCache from '@emotion/cache';
-import createEmotionServer from '@emotion/server/create-instance';
-import { CacheProvider as EmotionCacheProvider } from '@emotion/react';
+import { renderToPipeableStream } from 'react-dom/server';
 
 const ABORT_DELAY = 5_000;
 
@@ -48,26 +44,16 @@ function handleBotRequest(
 ) {
   return new Promise((resolve, reject) => {
     let shellRendered = false;
-    const emotionCache = createEmotionCache({ key: 'css' });
-
     const { pipe, abort } = renderToPipeableStream(
-      <EmotionCacheProvider value={emotionCache}>
-        <RemixServer
-          context={remixContext}
-          url={request.url}
-          abortDelay={ABORT_DELAY}
-        />
-      </EmotionCacheProvider>,
-
+      <RemixServer
+        context={remixContext}
+        url={request.url}
+        abortDelay={ABORT_DELAY}
+      />,
       {
         onAllReady() {
           shellRendered = true;
           const body = new PassThrough();
-
-          body.pipe(
-            createEmotionServer(emotionCache).renderStylesToNodeStream()
-          );
-
           const stream = createReadableStreamFromReadable(body);
 
           responseHeaders.set('Content-Type', 'text/html');
@@ -108,26 +94,16 @@ function handleBrowserRequest(
 ) {
   return new Promise((resolve, reject) => {
     let shellRendered = false;
-    const emotionCache = createEmotionCache({ key: 'css' });
-
     const { pipe, abort } = renderToPipeableStream(
-      <EmotionCacheProvider value={emotionCache}>
-        <RemixServer
-          context={remixContext}
-          url={request.url}
-          abortDelay={ABORT_DELAY}
-        />
-      </EmotionCacheProvider>,
-
+      <RemixServer
+        context={remixContext}
+        url={request.url}
+        abortDelay={ABORT_DELAY}
+      />,
       {
         onShellReady() {
           shellRendered = true;
           const body = new PassThrough();
-
-          body.pipe(
-            createEmotionServer(emotionCache).renderStylesToNodeStream()
-          );
-
           const stream = createReadableStreamFromReadable(body);
 
           responseHeaders.set('Content-Type', 'text/html');

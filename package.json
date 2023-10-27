@@ -2,7 +2,9 @@
   "name": "@vanaheim/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "start": "nx serve"
+  },
   "private": true,
   "devDependencies": {
     "@nx/cypress": "16.10.0",
@@ -37,16 +39,12 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
-    "@chakra-ui/react": "^2.8.1",
-    "@emotion/react": "^11.11.1",
-    "@emotion/server": "^11.11.0",
-    "@emotion/styled": "^11.11.0",
+    "@radix-ui/themes": "^2.0.0",
     "@remix-run/css-bundle": "^2.0.1",
     "@remix-run/node": "^2.0.1",
     "@remix-run/react": "^2.0.1",
     "@remix-run/serve": "^2.0.1",
     "@supabase/supabase-js": "^2.38.3",
-    "framer-motion": "^10.16.4",
     "isbot": "^3.6.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
