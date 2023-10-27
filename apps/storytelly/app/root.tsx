@@ -39,7 +39,7 @@ export default function App() {
   return (
     <Document>
       <Theme
-        accentColor="mint"
+        accentColor="brown"
         grayColor="gray"
         panelBackground="solid"
         scaling="100%"
