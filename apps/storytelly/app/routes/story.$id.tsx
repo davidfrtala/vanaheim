@@ -1,17 +1,28 @@
-import type { MetaFunction, LoaderFunctionArgs } from '@remix-run/node';
+import {
+  json,
+  type MetaFunction,
+  type LoaderFunctionArgs,
+} from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 import { Box, Heading } from '@radix-ui/themes';
-import supabase from '../../utils/supabase';
+import { createServerClient } from '../../utils/supabase.server';
 
-export const loader = async ({ params }: LoaderFunctionArgs) => {
-  const { data, error } = await supabase
+export const loader = async ({ request, params }: LoaderFunctionArgs) => {
+  const response = new Response();
+
+  const { data, error } = await createServerClient(request, response)
     .from('stories')
     .select('id, name, created_at')
     .eq('id', (params as { id: string }).id);
 
   if (error) throw error;
 
-  return { data: data[0] };
+  return json(
+    { data: data[0] },
+    {
+      headers: response.headers,
+    }
+  );
 };
 
 export const meta: MetaFunction = () => {
@@ -22,7 +33,7 @@ export const meta: MetaFunction = () => {
 };
 
 export default function Index() {
-  const { data } = useLoaderData<ReturnType<typeof loader>>();
+  const { data } = useLoaderData<typeof loader>();
 
   return (
     <Box p={'4'}>

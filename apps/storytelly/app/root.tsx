@@ -1,5 +1,5 @@
 import { cssBundleHref } from '@remix-run/css-bundle';
-import type { LinksFunction } from '@remix-run/node';
+import { json, type LinksFunction } from '@remix-run/node';
 import {
   Links,
   LiveReload,
@@ -7,14 +7,24 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLoaderData,
 } from '@remix-run/react';
 import { Theme } from '@radix-ui/themes';
 import styles from '@radix-ui/themes/styles.css';
+import { useSupabase } from '../utils/supabase.browser';
 
 export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: styles },
   ...(cssBundleHref ? [{ rel: 'stylesheet', href: cssBundleHref }] : []),
 ];
+
+export const loader = () =>
+  json({
+    env: {
+      SUPABASE_URL: process.env.SUPABASE_URL as string,
+      SUPABASE_ANON: process.env.SUPABASE_ANON as string,
+    },
+  });
 
 function Document({ children }: { children: React.ReactNode }) {
   return (
@@ -36,6 +46,9 @@ function Document({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
+  const { env } = useLoaderData<typeof loader>();
+  const supabase = useSupabase(env.SUPABASE_URL, env.SUPABASE_ANON);
+
   return (
     <Document>
       <Theme
@@ -46,7 +59,7 @@ export default function App() {
         radius="full"
         appearance="dark"
       >
-        <Outlet />
+        <Outlet context={{ supabase }} />
       </Theme>
     </Document>
   );
