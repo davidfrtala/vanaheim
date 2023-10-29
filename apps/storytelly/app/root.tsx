@@ -10,11 +10,13 @@ import {
   useLoaderData,
 } from '@remix-run/react';
 import { Theme } from '@radix-ui/themes';
-import styles from '@radix-ui/themes/styles.css';
+import radixStyles from '@radix-ui/themes/styles.css';
+import tailwindStyles from './tailwind.css';
 import { useSupabase } from '@storytelly/utils';
 
 export const links: LinksFunction = () => [
-  { rel: 'stylesheet', href: styles },
+  { rel: 'stylesheet', href: radixStyles },
+  { rel: 'stylesheet', href: tailwindStyles },
   ...(cssBundleHref ? [{ rel: 'stylesheet', href: cssBundleHref }] : []),
 ];
 
@@ -52,11 +54,11 @@ export default function App() {
   return (
     <Document>
       <Theme
-        accentColor="brown"
-        grayColor="gray"
+        accentColor="amber"
+        grayColor="sand"
         panelBackground="solid"
-        scaling="100%"
-        radius="full"
+        scaling="110%"
+        radius="large"
         appearance="dark"
       >
         <Outlet context={{ supabase }} />

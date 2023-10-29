@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@storytelly/components/*": ["apps/storytelly/app/components/*"],
       "@storytelly/utils": ["apps/storytelly/app/utils/index.ts"],
       "@vanaheim/storytelly/db": ["libs/storytelly/db/src/index.ts"]
     }
