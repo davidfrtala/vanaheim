@@ -5,7 +5,7 @@ import {
 } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 import { Box, Heading } from '@radix-ui/themes';
-import { createServerClient } from '../../utils/supabase.server';
+import { createServerClient } from '@storytelly/utils';
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   const response = new Response();

@@ -1,6 +1,6 @@
 import { Button } from '@radix-ui/themes';
 import { useOutletContext } from '@remix-run/react';
-import { SupabaseOutletContext } from '../../utils/supabase.browser';
+import { SupabaseOutletContext } from '@storytelly/utils';
 
 export default function Login() {
   const { supabase } = useOutletContext<SupabaseOutletContext>();

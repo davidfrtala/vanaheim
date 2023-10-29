@@ -7,7 +7,7 @@ import { Link, useLoaderData } from '@remix-run/react';
 import { formatDistance, parseISO } from 'date-fns';
 import { Box, Heading, Table, Button } from '@radix-ui/themes';
 import { EyeOpenIcon as ReadIcon } from '@radix-ui/react-icons';
-import { createServerClient } from '../../utils/supabase.server';
+import { createServerClient } from '@storytelly/utils';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const response = new Response();

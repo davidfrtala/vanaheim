@@ -11,7 +11,7 @@ import {
 } from '@remix-run/react';
 import { Theme } from '@radix-ui/themes';
 import styles from '@radix-ui/themes/styles.css';
-import { useSupabase } from '../utils/supabase.browser';
+import { useSupabase } from '@storytelly/utils';
 
 export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: styles },
