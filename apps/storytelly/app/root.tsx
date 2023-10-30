@@ -59,7 +59,6 @@ export default function App() {
         panelBackground="solid"
         scaling="110%"
         radius="large"
-        appearance="dark"
       >
         <Outlet context={{ supabase }} />
       </Theme>
