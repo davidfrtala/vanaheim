@@ -8,5 +8,6 @@ module.exports = {
   // assetsBuildDirectory: "public/build",
   // serverBuildPath: "build/index.js",
   // publicPath: "/build/",
+  serverDependenciesToBundle: ['@supabase/auth-ui-react'],
   watchPaths: () => require('@nx/remix').createWatchPaths(__dirname),
 };

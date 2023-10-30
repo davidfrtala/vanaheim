@@ -1,9 +1,18 @@
-import { Link, useOutletContext } from '@remix-run/react';
+import { useOutletContext } from '@remix-run/react';
 import { SupabaseOutletContext } from '@storytelly/utils';
-import { AuthForm } from '@storytelly/components/auth/AuthForm';
+import { SupabaseClient } from '@supabase/supabase-js';
+import { inputVariant } from '@storytelly/components/ui';
+import { Auth } from '@supabase/auth-ui-react';
+import { ThemeSupa as theme } from '@supabase/auth-ui-shared';
+import tailwindConfig from '../../tailwind.config';
 
 export default function AuthLogin() {
   const { supabase } = useOutletContext<SupabaseOutletContext>();
+  const {
+    theme: {
+      extend: { colors, borderRadius },
+    },
+  } = tailwindConfig;
 
   const handleEmailLogin = async () => {
     await supabase.auth.signInWithPassword({
@@ -26,8 +35,8 @@ export default function AuthLogin() {
   };
 
   return (
-    <div className="container relative hidden flex-col items-center justify-center h-[100vh] md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
-      <div className="relative hidden h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex">
+    <div className="container relative flex-col items-center justify-center h-[100vh] md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
+      <div className="relative hidden h-full flex-col p-10 text-muted dark:border-r lg:flex">
         <div className="absolute inset-0 bg-secondary-foreground" />
         <div className="relative z-20 flex items-center text-lg font-medium">
           <svg
@@ -58,17 +67,52 @@ export default function AuthLogin() {
       </div>
       <div className="lg:p-8">
         <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
-          <div className="flex flex-col space-y-2 text-center">
-            <h1 className="text-2xl font-semibold tracking-tight">Sign in</h1>
-            <p className="text-sm text-muted-foreground">
-              Please login to your account
-            </p>
-          </div>
-          <AuthForm
-            {...{
-              onEmailLogin: handleEmailLogin,
-              onGoogleLogin: handleGoogleLogin,
+          <Auth
+            theme="dark"
+            socialLayout="horizontal"
+            supabaseClient={supabase as unknown as SupabaseClient}
+            appearance={{
+              theme,
+              extend: true,
+              variables: {
+                default: {
+                  radii: {
+                    borderRadiusButton: borderRadius.md,
+                    buttonBorderRadius: borderRadius.md,
+                    inputBorderRadius: borderRadius.md,
+                  },
+                  colors: {
+                    brand: colors.primary.DEFAULT,
+                    brandAccent: 'hsl(var(--primary) / .9)',
+                    brandButtonText: colors.primary.foreground,
+                    defaultButtonBackground: 'transparent',
+                    defaultButtonBackgroundHover: colors.accent.DEFAULT,
+                    // defaultButtonBorder: 'lightgray',
+                    // defaultButtonText: 'gray',
+                    // dividerBackground: '#eaeaea',
+                    inputBackground: 'transparent',
+                    inputBorder: colors.border,
+                    inputBorderHover: '',
+                    inputBorderFocus: '',
+                    inputText: colors.muted.foreground,
+                    inputLabelText: '',
+                    inputPlaceholder: colors.muted.foreground,
+                    // messageText: '#2b805a',
+                    // messageBackground: '#e7fcf1',
+                    // messageBorder: '#d0f3e1',
+                    // messageTextDanger: '#ff6369',
+                    // messageBackgroundDanger: '#fff8f8',
+                    messageBorderDanger: colors.destructive.DEFAULT,
+                    // anchorTextColor: 'gray',
+                    // anchorTextHoverColor: 'darkgray',
+                  },
+                },
+              },
+              className: {
+                input: inputVariant(),
+              },
             }}
+            providers={['apple', 'google', 'notion', 'facebook', 'twitter']}
           />
           <p className="px-8 text-center text-sm text-muted-foreground">
             <button onClick={handleLogout}>Log out</button>.

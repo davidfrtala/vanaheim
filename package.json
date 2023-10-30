@@ -73,6 +73,8 @@
     "@remix-run/react": "^2.0.1",
     "@remix-run/serve": "^2.0.1",
     "@supabase/auth-helpers-remix": "^0.2.3",
+    "@supabase/auth-ui-react": "^0.4.6",
+    "@supabase/auth-ui-shared": "^0.1.8",
     "@supabase/supabase-js": "^2.38.3",
     "autoprefixer": "^10.4.16",
     "class-variance-authority": "^0.7.0",

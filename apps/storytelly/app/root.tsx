@@ -29,8 +29,10 @@ export const loader = () =>
   });
 
 function Document({ children }: { children: React.ReactNode }) {
+  const colorScheme: 'light' | 'dark' = 'dark';
+
   return (
-    <html lang="en">
+    <html lang="en" className={colorScheme} style={{ colorScheme }}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
