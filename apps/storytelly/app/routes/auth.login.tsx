@@ -1,5 +1,5 @@
 import { useOutletContext } from '@remix-run/react';
-import { SupabaseOutletContext } from '@storytelly/utils';
+import { SupabaseOutletContext, useTheme } from '@storytelly/utils';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { inputVariant } from '@storytelly/components/ui';
 import { Auth } from '@supabase/auth-ui-react';
@@ -8,27 +8,12 @@ import tailwindConfig from '../../tailwind.config';
 
 export default function AuthLogin() {
   const { supabase } = useOutletContext<SupabaseOutletContext>();
+  const [themeMode] = useTheme();
   const {
     theme: {
       extend: { colors, borderRadius },
     },
   } = tailwindConfig;
-
-  const handleEmailLogin = async () => {
-    await supabase.auth.signInWithPassword({
-      email: 'user@test.com',
-      password: 'leningrad',
-    });
-  };
-
-  const handleGoogleLogin = async () => {
-    await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo: 'http://localhost:3000/auth/callback',
-      },
-    });
-  };
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -68,7 +53,7 @@ export default function AuthLogin() {
       <div className="lg:p-8">
         <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
           <Auth
-            theme="dark"
+            theme={themeMode ?? 'light'}
             socialLayout="horizontal"
             supabaseClient={supabase as unknown as SupabaseClient}
             appearance={{

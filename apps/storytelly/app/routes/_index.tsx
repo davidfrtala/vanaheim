@@ -15,6 +15,7 @@ import {
   TableRow,
   Button,
 } from '@storytelly/components/ui';
+import { ModeToggle } from '@storytelly/components/mode-toggle';
 
 import { EyeOpenIcon as ReadIcon } from '@radix-ui/react-icons';
 
@@ -58,6 +59,10 @@ export default function Index() {
               Login
             </Link>
           </nav>
+
+          <div className="ml-auto flex items-center space-x-4">
+            <ModeToggle />
+          </div>
         </div>
       </div>
       <div className="flex-1 space-y-4 p-8 pt-6">
