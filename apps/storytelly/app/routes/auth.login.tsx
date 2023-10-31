@@ -7,14 +7,56 @@ import { useTheme } from '@storytelly/utils';
 import { inputVariant } from '@storytelly/components/ui';
 import tailwindConfig from '../../tailwind.config';
 
+const {
+  theme: {
+    extend: { colors, borderRadius },
+  },
+} = tailwindConfig;
+const authAppearance = {
+  theme,
+  extend: true,
+  variables: {
+    default: {
+      radii: {
+        borderRadiusButton: borderRadius.md,
+        buttonBorderRadius: borderRadius.md,
+        inputBorderRadius: borderRadius.md,
+      },
+      colors: {
+        brand: colors.primary.DEFAULT,
+        brandAccent: 'hsl(var(--primary) / .9)',
+        brandButtonText: colors.primary.foreground,
+        defaultButtonBackground: 'transparent',
+        defaultButtonBackgroundHover: colors.accent.DEFAULT,
+        // defaultButtonBorder: 'lightgray',
+        // defaultButtonText: 'gray',
+        // dividerBackground: '#eaeaea',
+        inputBackground: 'transparent',
+        inputBorder: colors.border,
+        inputBorderHover: '',
+        inputBorderFocus: '',
+        inputText: colors.muted.foreground,
+        inputLabelText: '',
+        inputPlaceholder: colors.muted.foreground,
+        // messageText: '#2b805a',
+        // messageBackground: '#e7fcf1',
+        // messageBorder: '#d0f3e1',
+        // messageTextDanger: '#ff6369',
+        // messageBackgroundDanger: '#fff8f8',
+        messageBorderDanger: colors.destructive.DEFAULT,
+        // anchorTextColor: 'gray',
+        // anchorTextHoverColor: 'darkgray',
+      },
+    },
+  },
+  className: {
+    input: inputVariant(),
+  },
+};
+
 export default function AuthLogin() {
   const { supabase } = useOutletContext<SupabaseOutletContext>();
   const [themeMode] = useTheme();
-  const {
-    theme: {
-      extend: { colors, borderRadius },
-    },
-  } = tailwindConfig;
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -57,49 +99,8 @@ export default function AuthLogin() {
             theme={themeMode ?? 'light'}
             socialLayout="horizontal"
             supabaseClient={supabase as unknown as SupabaseClient}
-            redirectTo="/"
-            appearance={{
-              theme,
-              extend: true,
-              variables: {
-                default: {
-                  radii: {
-                    borderRadiusButton: borderRadius.md,
-                    buttonBorderRadius: borderRadius.md,
-                    inputBorderRadius: borderRadius.md,
-                  },
-                  colors: {
-                    brand: colors.primary.DEFAULT,
-                    brandAccent: 'hsl(var(--primary) / .9)',
-                    brandButtonText: colors.primary.foreground,
-                    defaultButtonBackground: 'transparent',
-                    defaultButtonBackgroundHover: colors.accent.DEFAULT,
-                    // defaultButtonBorder: 'lightgray',
-                    // defaultButtonText: 'gray',
-                    // dividerBackground: '#eaeaea',
-                    inputBackground: 'transparent',
-                    inputBorder: colors.border,
-                    inputBorderHover: '',
-                    inputBorderFocus: '',
-                    inputText: colors.muted.foreground,
-                    inputLabelText: '',
-                    inputPlaceholder: colors.muted.foreground,
-                    // messageText: '#2b805a',
-                    // messageBackground: '#e7fcf1',
-                    // messageBorder: '#d0f3e1',
-                    // messageTextDanger: '#ff6369',
-                    // messageBackgroundDanger: '#fff8f8',
-                    messageBorderDanger: colors.destructive.DEFAULT,
-                    // anchorTextColor: 'gray',
-                    // anchorTextHoverColor: 'darkgray',
-                  },
-                },
-              },
-              className: {
-                input: inputVariant(),
-              },
-            }}
-            providers={['apple', 'google', 'notion', 'facebook', 'twitter']}
+            appearance={authAppearance}
+            providers={['apple', 'google', 'facebook', 'twitter']}
           />
           <p className="px-8 text-center text-sm text-muted-foreground">
             <button onClick={handleLogout}>Log out</button>.
