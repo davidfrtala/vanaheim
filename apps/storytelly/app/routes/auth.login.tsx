@@ -1,9 +1,10 @@
 import { useOutletContext } from '@remix-run/react';
-import { SupabaseOutletContext, useTheme } from '@storytelly/utils';
 import { SupabaseClient } from '@supabase/supabase-js';
-import { inputVariant } from '@storytelly/components/ui';
 import { Auth } from '@supabase/auth-ui-react';
 import { ThemeSupa as theme } from '@supabase/auth-ui-shared';
+import { SupabaseOutletContext } from '@storytelly/db';
+import { useTheme } from '@storytelly/utils';
+import { inputVariant } from '@storytelly/components/ui';
 import tailwindConfig from '../../tailwind.config';
 
 export default function AuthLogin() {
@@ -56,6 +57,7 @@ export default function AuthLogin() {
             theme={themeMode ?? 'light'}
             socialLayout="horizontal"
             supabaseClient={supabase as unknown as SupabaseClient}
+            redirectTo="/"
             appearance={{
               theme,
               extend: true,

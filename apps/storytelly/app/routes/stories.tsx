@@ -1,0 +1,34 @@
+import {
+  redirect,
+  type LoaderFunctionArgs,
+  type MetaFunction,
+} from '@remix-run/node';
+import { Outlet } from '@remix-run/react';
+import { getSession } from '@storytelly/db';
+import { ModeToggle } from '@storytelly/components/mode-toggle';
+
+export const loader = async ({ request }: LoaderFunctionArgs) => {
+  const { session } = await getSession(request);
+  return session === null ? redirect('/auth/login') : null;
+};
+
+export const meta: MetaFunction = () => {
+  return [{ title: 'Stories - Storytelly' }];
+};
+
+export default function Index() {
+  return (
+    <div className="flex-col md:flex">
+      <div className="border-b">
+        <div className="flex h-16 items-center px-4">
+          <div className="ml-auto flex items-center space-x-4">
+            <ModeToggle />
+          </div>
+        </div>
+      </div>
+      <div className="flex-1 space-y-4 p-8 pt-6">
+        <Outlet />
+      </div>
+    </div>
+  );
+}

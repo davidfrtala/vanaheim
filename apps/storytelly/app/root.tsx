@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { cssBundleHref } from '@remix-run/css-bundle';
 import { json, LoaderFunctionArgs, type LinksFunction } from '@remix-run/node';
 import {
@@ -8,18 +9,13 @@ import {
   Scripts,
   ScrollRestoration,
   useLoaderData,
+  useRevalidator,
 } from '@remix-run/react';
 import { Theme } from '@radix-ui/themes';
 import radixStyles from '@radix-ui/themes/styles.css';
 import tailwindStyles from './tailwind.css';
-import {
-  useSupabase,
-  ThemeBody,
-  ThemeHead,
-  ThemeProvider,
-  useTheme,
-  getThemeSession,
-} from '@storytelly/utils';
+import { ThemeProvider, useTheme, getThemeSession } from '@storytelly/utils';
+import { useSupabase } from '@storytelly/db';
 
 export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: radixStyles },
@@ -64,7 +60,20 @@ function Document({ children }: { children: React.ReactNode }) {
 
 export default function App() {
   const { env, theme } = useLoaderData<typeof loader>();
+  const { revalidate } = useRevalidator();
   const supabase = useSupabase(env.SUPABASE_URL, env.SUPABASE_ANON);
+
+  useEffect(() => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(() => {
+      revalidate();
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [supabase.auth, revalidate]);
 
   return (
     <ThemeProvider specifiedTheme={theme}>

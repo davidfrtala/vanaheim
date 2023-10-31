@@ -5,22 +5,28 @@ import {
 } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 import { Box, Heading } from '@radix-ui/themes';
-import { createServerClient } from '@storytelly/utils';
+import { getServerClient } from '@storytelly/db';
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
-  const response = new Response();
+  const { supabase, headers } = getServerClient(request);
 
-  const { data, error } = await createServerClient(request, response)
+  const { data, error } = await supabase
     .from('stories')
     .select('id, name, created_at')
     .eq('id', (params as { id: string }).id);
 
-  if (error) throw error;
+  if (data?.length !== 1) {
+    throw new Response('Story not found', { status: 404 });
+  }
+
+  if (error) {
+    throw new Response('Server error', { status: 500 });
+  }
 
   return json(
     { data: data[0] },
     {
-      headers: response.headers,
+      headers,
     }
   );
 };
@@ -37,7 +43,7 @@ export default function Index() {
 
   return (
     <Box p={'4'}>
-      <Heading color="orange">{data?.name}</Heading>
+      <Heading color="orange">{data.name}</Heading>
     </Box>
   );
 }
