@@ -97,10 +97,10 @@ export default function AuthLogin() {
         <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
           <Auth
             theme={themeMode ?? 'light'}
-            socialLayout="horizontal"
             supabaseClient={supabase as unknown as SupabaseClient}
             appearance={authAppearance}
-            providers={['apple', 'google', 'facebook', 'twitter']}
+            // socialLayout="horizontal"
+            providers={['google']}
           />
           <p className="px-8 text-center text-sm text-muted-foreground">
             <button onClick={handleLogout}>Log out</button>.
