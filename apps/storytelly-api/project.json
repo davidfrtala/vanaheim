@@ -27,6 +27,13 @@
         "command": "nx run storytelly-api:supabase stop"
       }
     },
+    "dbDiff": {
+      "executor": "nx:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "nx run storytelly-api:supabase db diff --use-migra"
+      }
+    },
     "lint": {
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
