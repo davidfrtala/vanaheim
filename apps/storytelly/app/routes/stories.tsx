@@ -2,7 +2,7 @@ import {
   redirect,
   type LoaderFunctionArgs,
   type MetaFunction,
-} from '@remix-run/node';
+} from '@vercel/remix';
 import { Outlet, useLoaderData } from '@remix-run/react';
 import { getSession } from '@storytelly/db';
 import { ModeToggle } from '@storytelly/components/mode-toggle';

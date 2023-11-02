@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { cssBundleHref } from '@remix-run/css-bundle';
-import { json, LoaderFunctionArgs, type LinksFunction } from '@remix-run/node';
+import { json, LoaderFunctionArgs, type LinksFunction } from '@vercel/remix';
 import {
   Links,
   LiveReload,

@@ -2,7 +2,7 @@ import {
   json,
   type LoaderFunctionArgs,
   type MetaFunction,
-} from '@remix-run/node';
+} from '@vercel/remix';
 import { Link, useLoaderData } from '@remix-run/react';
 import { formatDistance, parseISO } from 'date-fns';
 import { getServerClient } from '@storytelly/db';
