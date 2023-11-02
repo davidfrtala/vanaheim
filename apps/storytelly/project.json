@@ -6,9 +6,15 @@
   "tags": [],
   "targets": {
     "build": {
-      "executor": "@nx/remix:build",
-      "outputs": ["{options.outputPath}"],
+      "executor": "nx:run-commands",
       "options": {
+        "cwd": "apps/storytelly",
+        "commands": [
+          "remix build",
+          "mkdir -p ../../dist/apps/storytelly",
+          "cp -r ./build/* ../../dist/apps/storytelly"
+        ],
+        "parallel": false,
         "outputPath": "dist/apps/storytelly"
       }
     },
@@ -17,12 +23,6 @@
       "command": "remix dev --manual",
       "options": {
         "cwd": "apps/storytelly"
-      }
-    },
-    "_serve": {
-      "executor": "@nx/remix:serve",
-      "options": {
-        "port": 4200
       }
     },
     "start": {
