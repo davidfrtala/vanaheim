@@ -40,6 +40,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.2",
+    "@lexical/react": "^0.12.2",
     "@radix-ui/react-accordion": "^1.1.2",
     "@radix-ui/react-alert-dialog": "^1.0.5",
     "@radix-ui/react-aspect-ratio": "^1.0.3",
@@ -83,6 +84,7 @@
     "cmdk": "^0.2.0",
     "date-fns": "^2.30.0",
     "isbot": "^3.6.8",
+    "lexical": "^0.12.2",
     "react": "^18.2.0",
     "react-day-picker": "^8.9.1",
     "react-dom": "^18.2.0",
