@@ -1,4 +1,4 @@
-import { json, redirect, type ActionFunctionArgs } from '@vercel/remix';
+import { json, redirect, type ActionFunctionArgs } from '@remix-run/node';
 
 import { isTheme, getThemeSession } from '@storytelly/utils';
 

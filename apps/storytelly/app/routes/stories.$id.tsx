@@ -2,7 +2,7 @@ import {
   json,
   type MetaFunction,
   type LoaderFunctionArgs,
-} from '@vercel/remix';
+} from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 import { Box, Heading } from '@radix-ui/themes';
 import { getServerClient } from '@storytelly/db';
