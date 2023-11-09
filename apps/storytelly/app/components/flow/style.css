@@ -1,0 +1,21 @@
+
+.react-flow__node {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+  border-radius: 1px;
+  border-width: 2px;
+  box-shadow: 6px 6px 0 1px rgba(0, 0, 0, 0.7);
+}
+
+.react-flow__node.selected,
+.react-flow__node:hover,
+.react-flow__node:focus {
+  box-shadow: 6px 6px 0 1px rgba(0, 0, 0, 0.7);
+  background-color: #eee;
+}
+
+.react-flow__handle {
+  display: none;
+}

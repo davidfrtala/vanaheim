@@ -41,6 +41,11 @@ export default function Index() {
                     <NavLink to="/stories/new">New story</NavLink>
                   </NavigationMenuLink>
                 </NavigationMenuItem>
+                <NavigationMenuItem>
+                  <NavigationMenuLink>
+                    <NavLink to="/stories/pathway">Pathway</NavLink>
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
               </NavigationMenuList>
             </NavigationMenu>
           </div>
