@@ -42,15 +42,7 @@ import {
 
 const LowPriority = 1;
 
-const supportedBlockTypes = new Set([
-  'paragraph',
-  'quote',
-  'code',
-  'h1',
-  'h2',
-  'ul',
-  'ol',
-]);
+const supportedBlockTypes = new Set(['paragraph', 'h1', 'h2', 'quote']);
 
 const blockTypeToBlockName = {
   code: 'Code Block',
@@ -376,41 +368,55 @@ function BlockOptionsDropdownList({
 
   return (
     <div className="dropdown" ref={dropDownRef}>
-      <button className="item" onClick={formatParagraph}>
-        <span className="icon paragraph" />
-        <span className="text">Normal</span>
-        {blockType === 'paragraph' && <span className="active" />}
-      </button>
-      <button className="item" onClick={formatLargeHeading}>
-        <span className="icon large-heading" />
-        <span className="text">Large Heading</span>
-        {blockType === 'h1' && <span className="active" />}
-      </button>
-      <button className="item" onClick={formatSmallHeading}>
-        <span className="icon small-heading" />
-        <span className="text">Small Heading</span>
-        {blockType === 'h2' && <span className="active" />}
-      </button>
-      <button className="item" onClick={formatBulletList}>
-        <span className="icon bullet-list" />
-        <span className="text">Bullet List</span>
-        {blockType === 'ul' && <span className="active" />}
-      </button>
-      <button className="item" onClick={formatNumberedList}>
-        <span className="icon numbered-list" />
-        <span className="text">Numbered List</span>
-        {blockType === 'ol' && <span className="active" />}
-      </button>
-      <button className="item" onClick={formatQuote}>
-        <span className="icon quote" />
-        <span className="text">Quote</span>
-        {blockType === 'quote' && <span className="active" />}
-      </button>
-      <button className="item" onClick={formatCode}>
-        <span className="icon code" />
-        <span className="text">Code Block</span>
-        {blockType === 'code' && <span className="active" />}
-      </button>
+      {supportedBlockTypes.has('paragraph') && (
+        <button className="item" onClick={formatParagraph}>
+          <span className="icon paragraph" />
+          <span className="text">Normal</span>
+          {blockType === 'paragraph' && <span className="active" />}
+        </button>
+      )}
+      {supportedBlockTypes.has('h1') && (
+        <button className="item" onClick={formatLargeHeading}>
+          <span className="icon large-heading" />
+          <span className="text">Large Heading</span>
+          {blockType === 'h1' && <span className="active" />}
+        </button>
+      )}
+      {supportedBlockTypes.has('h2') && (
+        <button className="item" onClick={formatSmallHeading}>
+          <span className="icon small-heading" />
+          <span className="text">Small Heading</span>
+          {blockType === 'h2' && <span className="active" />}
+        </button>
+      )}
+      {supportedBlockTypes.has('ul') && (
+        <button className="item" onClick={formatBulletList}>
+          <span className="icon bullet-list" />
+          <span className="text">Bullet List</span>
+          {blockType === 'ul' && <span className="active" />}
+        </button>
+      )}
+      {supportedBlockTypes.has('ol') && (
+        <button className="item" onClick={formatNumberedList}>
+          <span className="icon numbered-list" />
+          <span className="text">Numbered List</span>
+          {blockType === 'ol' && <span className="active" />}
+        </button>
+      )}
+      {supportedBlockTypes.has('quote') && (
+        <button className="item" onClick={formatQuote}>
+          <span className="icon quote" />
+          <span className="text">Quote</span>
+          {blockType === 'quote' && <span className="active" />}
+        </button>
+      )}
+      {supportedBlockTypes.has('code') && (
+        <button className="item" onClick={formatCode}>
+          <span className="icon code" />
+          <span className="text">Code Block</span>
+          {blockType === 'code' && <span className="active" />}
+        </button>
+      )}
     </div>
   );
 }
@@ -634,24 +640,6 @@ export default function ToolbarPlugin() {
           >
             <i className="format strikethrough" />
           </button>
-          <button
-            onClick={() => {
-              editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'code');
-            }}
-            className={'toolbar-item spaced ' + (isCode ? 'active' : '')}
-            aria-label="Insert Code"
-          >
-            <i className="format code" />
-          </button>
-          <button
-            onClick={insertLink}
-            className={'toolbar-item spaced ' + (isLink ? 'active' : '')}
-            aria-label="Insert Link"
-          >
-            <i className="format link" />
-          </button>
-          {isLink &&
-            createPortal(<FloatingLinkEditor editor={editor} />, document.body)}
           <Divider />
           <button
             onClick={() => {
