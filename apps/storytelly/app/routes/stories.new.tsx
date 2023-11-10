@@ -13,11 +13,15 @@ import {
   TooltipTrigger,
 } from '@storytelly/components/ui';
 
+import Flow from '@storytelly/components/flow/Flow';
 const LazyComponent = lazy(() => import('../components/editor/Editor'));
+
+import flowStyle from 'reactflow/dist/style.css';
 import editorStyles from '../components/editor/editor.css';
 
 export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: editorStyles },
+  { rel: 'stylesheet', href: flowStyle },
 ];
 
 export default function Editor() {
@@ -87,7 +91,9 @@ export default function Editor() {
           </div>
         </div>
         <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/3 xl:w-1/3">
-          <div className="h-full p-4">Right Sidebar</div>
+          <div className="h-full">
+            <Flow />
+          </div>
         </div>
       </div>
     </Suspense>
