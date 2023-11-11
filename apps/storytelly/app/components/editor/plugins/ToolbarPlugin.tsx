@@ -40,6 +40,20 @@ import {
   getCodeLanguages,
 } from '@lexical/code';
 
+import {
+  ChevronDownIcon,
+  FontItalicIcon,
+  FontBoldIcon,
+  UnderlineIcon,
+  StrikethroughIcon,
+  TextAlignLeftIcon,
+  TextAlignCenterIcon,
+  TextAlignRightIcon,
+  TextAlignJustifyIcon,
+  ReloadIcon,
+} from '@radix-ui/react-icons';
+import { Button } from '@storytelly/components/ui';
+
 const LowPriority = 1;
 
 const supportedBlockTypes = new Set(['paragraph', 'h1', 'h2', 'quote']);
@@ -367,7 +381,7 @@ function BlockOptionsDropdownList({
   };
 
   return (
-    <div className="dropdown" ref={dropDownRef}>
+    <div className="dropdown shadow-lg" ref={dropDownRef}>
       {supportedBlockTypes.has('paragraph') && (
         <button className="item" onClick={formatParagraph}>
           <span className="icon paragraph" />
@@ -543,7 +557,9 @@ export default function ToolbarPlugin() {
 
   return (
     <div className="toolbar" ref={toolbarRef}>
-      <button
+      <Button
+        variant="ghost"
+        size="icon"
         disabled={!canUndo}
         onClick={() => {
           editor.dispatchCommand(UNDO_COMMAND);
@@ -551,9 +567,11 @@ export default function ToolbarPlugin() {
         className="toolbar-item spaced"
         aria-label="Undo"
       >
-        <i className="format undo" />
-      </button>
-      <button
+        <ReloadIcon className="h-4 w-4 transform scale-x-[-1]" />
+      </Button>
+      <Button
+        variant="ghost"
+        size="icon"
         disabled={!canRedo}
         onClick={() => {
           editor.dispatchCommand(REDO_COMMAND);
@@ -561,12 +579,13 @@ export default function ToolbarPlugin() {
         className="toolbar-item"
         aria-label="Redo"
       >
-        <i className="format redo" />
-      </button>
+        <ReloadIcon className="h-4 w-4" />
+      </Button>
       <Divider />
       {supportedBlockTypes.has(blockType) && (
         <>
-          <button
+          <Button
+            variant="ghost"
             className="toolbar-item block-controls"
             onClick={() =>
               setShowBlockOptionsDropDown(!showBlockOptionsDropDown)
@@ -575,8 +594,8 @@ export default function ToolbarPlugin() {
           >
             <span className={'icon block-type ' + blockType} />
             <span className="text">{blockTypeToBlockName[blockType]}</span>
-            <i className="chevron-down" />
-          </button>
+            <ChevronDownIcon className="h-4 w-4" />
+          </Button>
           {showBlockOptionsDropDown &&
             createPortal(
               <BlockOptionsDropdownList
@@ -602,34 +621,42 @@ export default function ToolbarPlugin() {
         </>
       ) : (
         <>
-          <button
+          <Button
+            variant="ghost"
+            size="icon"
             onClick={() => {
               editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'bold');
             }}
             className={'toolbar-item spaced ' + (isBold ? 'active' : '')}
             aria-label="Format Bold"
           >
-            <i className="format bold" />
-          </button>
-          <button
+            <FontBoldIcon className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon"
             onClick={() => {
               editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'italic');
             }}
             className={'toolbar-item spaced ' + (isItalic ? 'active' : '')}
             aria-label="Format Italics"
           >
-            <i className="format italic" />
-          </button>
-          <button
+            <FontItalicIcon className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon"
             onClick={() => {
               editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'underline');
             }}
             className={'toolbar-item spaced ' + (isUnderline ? 'active' : '')}
             aria-label="Format Underline"
           >
-            <i className="format underline" />
-          </button>
-          <button
+            <UnderlineIcon className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon"
             onClick={() => {
               editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'strikethrough');
             }}
@@ -638,45 +665,53 @@ export default function ToolbarPlugin() {
             }
             aria-label="Format Strikethrough"
           >
-            <i className="format strikethrough" />
-          </button>
+            <StrikethroughIcon className="h-4 w-4" />
+          </Button>
           <Divider />
-          <button
+          <Button
+            variant="ghost"
+            size="icon"
             onClick={() => {
               editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'left');
             }}
             className="toolbar-item spaced"
             aria-label="Left Align"
           >
-            <i className="format left-align" />
-          </button>
-          <button
+            <TextAlignLeftIcon className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon"
             onClick={() => {
               editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'center');
             }}
             className="toolbar-item spaced"
             aria-label="Center Align"
           >
-            <i className="format center-align" />
-          </button>
-          <button
+            <TextAlignCenterIcon className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon"
             onClick={() => {
               editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'right');
             }}
             className="toolbar-item spaced"
             aria-label="Right Align"
           >
-            <i className="format right-align" />
-          </button>
-          <button
+            <TextAlignRightIcon className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon"
             onClick={() => {
               editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'justify');
             }}
             className="toolbar-item"
             aria-label="Justify Align"
           >
-            <i className="format justify-align" />
-          </button>{' '}
+            <TextAlignJustifyIcon className="h-4 w-4" />
+          </Button>{' '}
         </>
       )}
     </div>

@@ -10,16 +10,11 @@ import { TableCellNode, TableNode, TableRowNode } from '@lexical/table';
 import { ListItemNode, ListNode } from '@lexical/list';
 import { CodeHighlightNode, CodeNode } from '@lexical/code';
 import { AutoLinkNode, LinkNode } from '@lexical/link';
-import { LinkPlugin } from '@lexical/react/LexicalLinkPlugin';
-import { ListPlugin } from '@lexical/react/LexicalListPlugin';
-import { MarkdownShortcutPlugin } from '@lexical/react/LexicalMarkdownShortcutPlugin';
-import { TRANSFORMERS } from '@lexical/markdown';
 
 import TreeViewPlugin from './plugins/TreeViewPlugin';
 import ToolbarPlugin from './plugins/ToolbarPlugin';
 import ListMaxIndentLevelPlugin from './plugins/ListMaxIndentLevelPlugin';
 import CodeHighlightPlugin from './plugins/CodeHighlightPlugin';
-import AutoLinkPlugin from './plugins/AutoLinkPlugin';
 
 function Placeholder() {
   return <div className="editor-placeholder">Enter some rich text...</div>;
@@ -60,10 +55,10 @@ export default function Editor() {
           ErrorBoundary={LexicalErrorBoundary}
         />
         <HistoryPlugin />
-        <TreeViewPlugin />
         <AutoFocusPlugin />
         <CodeHighlightPlugin />
         <ListMaxIndentLevelPlugin maxDepth={7} />
+        {/* <TreeViewPlugin /> */}
       </div>
     </LexicalComposer>
   );

@@ -1,32 +1,4 @@
 
-.other h2 {
-  font-size: 18px;
-  color: #444;
-  margin-bottom: 7px;
-}
-
-.other a {
-  color: #777;
-  text-decoration: underline;
-  font-size: 14px;
-}
-
-.other ul {
-  padding: 0;
-  margin: 0;
-  list-style-type: none;
-}
-
-.App {
-  font-family: sans-serif;
-  text-align: center;
-}
-
-h1 {
-  font-size: 24px;
-  color: #333;
-}
-
 .ltr {
   text-align: left;
 }
@@ -39,21 +11,21 @@ h1 {
   min-height: 150px;
   resize: none;
   font-size: 15px;
-  caret-color: rgb(5, 5, 5);
+  caret-color: hsl(var(--foreground));
   position: relative;
   tab-size: 1;
   outline: 0;
-  padding: 15px 10px;
-  caret-color: #444;
+  padding: 3rem 5rem;
 }
 
 .editor-placeholder {
-  color: #999;
+  top: 0px;
+  left: 0px;
+  color: hsl(var(--muted-foreground));
   overflow: hidden;
   position: absolute;
   text-overflow: ellipsis;
-  top: 15px;
-  left: 10px;
+  padding: 3rem 5rem;
   font-size: 15px;
   user-select: none;
   display: inline-block;
@@ -192,7 +164,7 @@ h1 {
 
 .editor-heading-h1 {
   font-size: 24px;
-  color: rgb(5, 5, 5);
+  color: hsl(var(--foreground));
   font-weight: 400;
   margin: 0;
   margin-bottom: 12px;
@@ -292,7 +264,6 @@ pre::-webkit-scrollbar-thumb {
 .toolbar {
   display: flex;
   margin-bottom: 1px;
-  background: #fff;
   padding: 4px;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
@@ -302,8 +273,8 @@ pre::-webkit-scrollbar-thumb {
 .toolbar button.toolbar-item {
   border: 0;
   display: flex;
-  background: none;
   border-radius: 10px;
+  color: hsl(var(--muted-foreground));
   padding: 8px;
   cursor: pointer;
   vertical-align: middle;
@@ -333,20 +304,16 @@ pre::-webkit-scrollbar-thumb {
 }
 
 .toolbar button.toolbar-item.active {
-  background-color: rgba(223, 232, 250, 0.3);
+  background-color: hsl(var(--muted));
 }
 
 .toolbar button.toolbar-item.active i {
   opacity: 1;
 }
 
-.toolbar .toolbar-item:hover:not([disabled]) {
-  background-color: #eee;
-}
-
 .toolbar .divider {
   width: 1px;
-  background-color: #eee;
+  background-color: hsl(var(--border));
   margin: 0 4px;
 }
 
@@ -361,7 +328,7 @@ pre::-webkit-scrollbar-thumb {
   -moz-appearance: none;
   width: 70px;
   font-size: 14px;
-  color: #777;
+  color: hsl(var(--muted-foreground));
   text-overflow: ellipsis;
 }
 
@@ -376,7 +343,7 @@ pre::-webkit-scrollbar-thumb {
   width: 200px;
   vertical-align: middle;
   font-size: 14px;
-  color: #777;
+  color: hsl(var(--muted-foreground));
   text-overflow: ellipsis;
   width: 70px;
   overflow: hidden;
@@ -469,18 +436,17 @@ i.chevron-down {
   z-index: 5;
   display: block;
   position: absolute;
-  box-shadow: 0 12px 28px 0 rgba(0, 0, 0, 0.2), 0 2px 4px 0 rgba(0, 0, 0, 0.1),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.5);
   border-radius: 8px;
+  border: 1px solid hsl(var(--border));
+  background-color: hsl(var(--popover));
   min-width: 100px;
   min-height: 40px;
-  background-color: #fff;
 }
 
 .dropdown .item {
   margin: 0 8px 0 8px;
   padding: 8px;
-  color: #050505;
+  color: hsl(var(--popover-foreground));
   cursor: pointer;
   line-height: 16px;
   font-size: 15px;
@@ -489,7 +455,7 @@ i.chevron-down {
   flex-direction: row;
   flex-shrink: 0;
   justify-content: space-between;
-  background-color: #fff;
+  background-color: hsl(var(--popover));
   border-radius: 8px;
   border: 0;
   min-width: 268px;
@@ -511,7 +477,7 @@ i.chevron-down {
 }
 
 .dropdown .item:hover {
-  background-color: #eee;
+  background-color: hsl(var(--accent));
 }
 
 .dropdown .item .text {
