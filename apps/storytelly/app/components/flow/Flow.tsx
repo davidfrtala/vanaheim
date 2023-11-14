@@ -1,5 +1,5 @@
 import Dagre from '@dagrejs/dagre';
-import React, { useCallback, useEffect } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import ReactFlow, {
   ReactFlowProvider,
   Panel,
@@ -13,11 +13,17 @@ import ReactFlow, {
   addEdge,
   Node,
   Edge,
+  NodeMouseHandler,
 } from 'reactflow';
 
 import { Button } from '../ui';
 
-import { initialNodes, initialEdges } from './nodes-edges';
+import {
+  initialNodes,
+  selectedNode,
+  initialEdges,
+  selectedEdge,
+} from './nodes-edges';
 
 enum Orientation {
   horizontal = 'LR',
@@ -30,6 +36,7 @@ dagreGraph.setDefaultEdgeLabel(() => ({}));
 const nodeWidth = 172;
 const nodeHeight = 36;
 
+const edgesType: ConnectionLineType = ConnectionLineType.Bezier;
 const getLayoutedElements = (
   nodes: Node<any>[],
   edges: Edge<any>[],
@@ -72,13 +79,80 @@ const LayoutFlow = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
+  // Find the root node
+  const rootNode = nodes.find(
+    (node) => !edges.some((edge) => edge.target === node.id)
+  );
+
+  // Initialize the path with the root node's id
+  const [path, setPath] = useState<string[]>(rootNode ? [rootNode.id] : []);
+  const pathSet = useMemo(() => new Set(path), [path]);
+
+  const onNodeClick = useCallback<NodeMouseHandler>(
+    (event, node: Node) => {
+      const lastNodeInPath = path[path.length - 1];
+
+      const isParent = edges.some(
+        (edge) => edge.source === node.id && edge.target === lastNodeInPath
+      );
+
+      if (isParent) {
+        return;
+      }
+
+      // If the clicked node is the last node in the path, remove it from the path
+      if (node.id === lastNodeInPath) {
+        setPath((prevPath) => prevPath.slice(0, -1));
+        return;
+      }
+
+      // If the clicked node is already in the path, ignore the click
+      if (path.includes(node.id)) {
+        return;
+      }
+
+      const isConnected =
+        path.length === 0 ||
+        edges.some(
+          (edge) =>
+            (edge.source === lastNodeInPath && edge.target === node.id) ||
+            (edge.source === node.id && edge.target === lastNodeInPath)
+        );
+
+      // If the clicked node is connected to the last node in the path, append it to the path
+      if (isConnected) {
+        setPath((prevPath) => [...prevPath, node.id]);
+      }
+    },
+    [edges, path, pathSet, setPath]
+  );
+  const findEdgesInPath = useCallback(
+    (path: string[], edges: Edge[]): Edge[] => {
+      const edgeMap = new Map(
+        edges.map((edge) => [`${edge.source}-${edge.target}`, edge])
+      );
+
+      const edgesInPath: Edge[] = [];
+
+      for (let i = 0; i < path.length - 1; i++) {
+        const edge =
+          edgeMap.get(`${path[i]}-${path[i + 1]}`) ||
+          edgeMap.get(`${path[i + 1]}-${path[i]}`);
+
+        if (edge) {
+          edgesInPath.push(edge);
+        }
+      }
+
+      return edgesInPath;
+    },
+    []
+  );
+
   const onConnect = useCallback(
     (params: Edge | Connection) =>
       setEdges((eds) =>
-        addEdge(
-          { ...params, type: ConnectionLineType.SmoothStep, animated: true },
-          eds
-        )
+        addEdge({ ...params, type: edgesType, animated: true }, eds)
       ),
     []
   );
@@ -94,18 +168,53 @@ const LayoutFlow = () => {
     [nodes, edges]
   );
 
+  const updatedNodes = useMemo(
+    () =>
+      nodes.map((node) => {
+        if (pathSet.has(node.id)) {
+          return {
+            ...node,
+            style: selectedNode.style,
+          };
+        }
+        return node;
+      }),
+    [nodes, pathSet]
+  );
+
+  const edgesInPath = findEdgesInPath(path, edges);
+  const edgesInPathSet = useMemo(
+    () => new Set(edgesInPath.map((edge) => edge.id)),
+    [edgesInPath]
+  );
+
+  const updatedEdges = useMemo(
+    () =>
+      edges.map((edge) => {
+        if (edgesInPathSet.has(edge.id)) {
+          return {
+            ...edge,
+            ...selectedEdge,
+          };
+        }
+        return edge;
+      }),
+    [edges, edgesInPathSet]
+  );
+
   return (
     <ReactFlow
-      nodes={nodes}
-      edges={edges}
+      nodes={updatedNodes}
+      edges={updatedEdges}
       onNodesChange={onNodesChange}
       onEdgesChange={onEdgesChange}
+      onNodeClick={onNodeClick}
       onConnect={onConnect}
-      connectionLineType={ConnectionLineType.SmoothStep}
+      connectionLineType={edgesType}
       // remove this after we subscribe to React Flow, once we start making shit tons of money :o)))
       proOptions={{ hideAttribution: true }}
       defaultEdgeOptions={{
-        type: 'smoothstep',
+        type: edgesType,
       }}
       fitView
       snapToGrid
