@@ -36,7 +36,7 @@ dagreGraph.setDefaultEdgeLabel(() => ({}));
 const nodeWidth = 172;
 const nodeHeight = 36;
 
-const edgesType: ConnectionLineType = ConnectionLineType.Bezier;
+const edgesType: ConnectionLineType = ConnectionLineType.SimpleBezier;
 const getLayoutedElements = (
   nodes: Node<any>[],
   edges: Edge<any>[],
@@ -75,6 +75,26 @@ const getLayoutedElements = (
 
 getLayoutedElements(initialNodes, initialEdges);
 
+const findEdgesInPath = (path: string[], edges: Edge[]): Edge[] => {
+  const edgeMap = new Map(
+    edges.map((edge) => [`${edge.source}-${edge.target}`, edge])
+  );
+
+  const edgesInPath: Edge[] = [];
+
+  for (let i = 0; i < path.length - 1; i++) {
+    const edge =
+      edgeMap.get(`${path[i]}-${path[i + 1]}`) ||
+      edgeMap.get(`${path[i + 1]}-${path[i]}`);
+
+    if (edge) {
+      edgesInPath.push(edge);
+    }
+  }
+
+  return edgesInPath;
+};
+
 const LayoutFlow = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
@@ -89,7 +109,7 @@ const LayoutFlow = () => {
   const pathSet = useMemo(() => new Set(path), [path]);
 
   const onNodeClick = useCallback<NodeMouseHandler>(
-    (event, node: Node) => {
+    (_, node: Node) => {
       const lastNodeInPath = path[path.length - 1];
 
       const isParent = edges.some(
@@ -107,7 +127,7 @@ const LayoutFlow = () => {
       }
 
       // If the clicked node is already in the path, ignore the click
-      if (path.includes(node.id)) {
+      if (pathSet.has(node.id)) {
         return;
       }
 
@@ -125,28 +145,6 @@ const LayoutFlow = () => {
       }
     },
     [edges, path, pathSet, setPath]
-  );
-  const findEdgesInPath = useCallback(
-    (path: string[], edges: Edge[]): Edge[] => {
-      const edgeMap = new Map(
-        edges.map((edge) => [`${edge.source}-${edge.target}`, edge])
-      );
-
-      const edgesInPath: Edge[] = [];
-
-      for (let i = 0; i < path.length - 1; i++) {
-        const edge =
-          edgeMap.get(`${path[i]}-${path[i + 1]}`) ||
-          edgeMap.get(`${path[i + 1]}-${path[i]}`);
-
-        if (edge) {
-          edgesInPath.push(edge);
-        }
-      }
-
-      return edgesInPath;
-    },
-    []
   );
 
   const onConnect = useCallback(
