@@ -4,18 +4,13 @@ import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { ContentEditable } from '@lexical/react/LexicalContentEditable';
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
 import { AutoFocusPlugin } from '@lexical/react/LexicalAutoFocusPlugin';
-import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary';
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
 import { HeadingNode, QuoteNode } from '@lexical/rich-text';
-import { TableCellNode, TableNode, TableRowNode } from '@lexical/table';
-import { ListItemNode, ListNode } from '@lexical/list';
-import { CodeHighlightNode, CodeNode } from '@lexical/code';
-import { AutoLinkNode, LinkNode } from '@lexical/link';
+import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary';
 
 import TreeViewPlugin from './plugins/TreeViewPlugin';
 import ToolbarPlugin from './plugins/ToolbarPlugin';
 import ListMaxIndentLevelPlugin from './plugins/ListMaxIndentLevelPlugin';
-import CodeHighlightPlugin from './plugins/CodeHighlightPlugin';
 import ExampleTheme from './theme';
 import { editorState } from './chapters';
 
@@ -33,19 +28,7 @@ const editorConfig = {
     throw error;
   },
   // Any custom nodes go here
-  nodes: [
-    HeadingNode,
-    ListNode,
-    ListItemNode,
-    QuoteNode,
-    CodeNode,
-    CodeHighlightNode,
-    TableNode,
-    TableCellNode,
-    TableRowNode,
-    AutoLinkNode,
-    LinkNode,
-  ],
+  nodes: [HeadingNode, QuoteNode],
 };
 
 // When the editor changes, you can get notified via the
@@ -72,7 +55,6 @@ export default function Editor() {
         />
         <HistoryPlugin />
         <AutoFocusPlugin />
-        <CodeHighlightPlugin />
         <ListMaxIndentLevelPlugin maxDepth={7} />
 
         <OnChangePlugin onChange={onChange} />

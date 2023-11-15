@@ -86,7 +86,7 @@ const Departure = [
         format: 0,
         mode: 'normal',
         style: '',
-        text: '1) Depaarture',
+        text: '1) Departure',
         type: 'text',
         version: 1,
       },
