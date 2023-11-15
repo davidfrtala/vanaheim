@@ -25,47 +25,7 @@ const Beginning = [
         format: 0,
         mode: 'normal',
         style: '',
-        text: 'kde bolo tam bolo',
-        type: 'text',
-        version: 1,
-      },
-    ],
-    direction: 'ltr',
-    format: '',
-    indent: 0,
-    type: 'paragraph',
-    version: 1,
-  },
-];
-
-const Stay = [
-  {
-    children: [
-      {
-        detail: 0,
-        format: 0,
-        mode: 'normal',
-        style: '',
-        text: '1) Stay at home',
-        type: 'text',
-        version: 1,
-      },
-    ],
-    direction: 'ltr',
-    format: '',
-    indent: 0,
-    type: 'heading',
-    version: 1,
-    tag: 'h1',
-  },
-  {
-    children: [
-      {
-        detail: 0,
-        format: 0,
-        mode: 'normal',
-        style: '',
-        text: 'zostan doma',
+        text: 'Once upon a time',
         type: 'text',
         version: 1,
       },
@@ -118,9 +78,217 @@ const Departure = [
   },
 ];
 
+const Stay = [
+  {
+    children: [
+      {
+        detail: 0,
+        format: 0,
+        mode: 'normal',
+        style: '',
+        text: '2) Stay at home',
+        type: 'text',
+        version: 1,
+      },
+    ],
+    direction: 'ltr',
+    format: '',
+    indent: 0,
+    type: 'heading',
+    version: 1,
+    tag: 'h1',
+  },
+  {
+    children: [
+      {
+        detail: 0,
+        format: 0,
+        mode: 'normal',
+        style: '',
+        text: 'Nah... not intersted. Gonna smoke some weed instead',
+        type: 'text',
+        version: 1,
+      },
+    ],
+    direction: 'ltr',
+    format: '',
+    indent: 0,
+    type: 'paragraph',
+    version: 1,
+  },
+];
+
+const YoloSolo = [
+  {
+    children: [
+      {
+        detail: 0,
+        format: 0,
+        mode: 'normal',
+        style: '',
+        text: '5) Yolo Solo',
+        type: 'text',
+        version: 1,
+      },
+    ],
+    direction: 'ltr',
+    format: '',
+    indent: 0,
+    type: 'heading',
+    version: 1,
+    tag: 'h1',
+  },
+  {
+    children: [
+      {
+        detail: 0,
+        format: 0,
+        mode: 'normal',
+        style: '',
+        text: 'Come get some!',
+        type: 'text',
+        version: 1,
+      },
+    ],
+    direction: 'ltr',
+    format: '',
+    indent: 0,
+    type: 'paragraph',
+    version: 1,
+  },
+];
+
+const GetSomeHelp = [
+  {
+    children: [
+      {
+        detail: 0,
+        format: 0,
+        mode: 'normal',
+        style: '',
+        text: '4) Get some help',
+        type: 'text',
+        version: 1,
+      },
+    ],
+    direction: 'ltr',
+    format: '',
+    indent: 0,
+    type: 'heading',
+    version: 1,
+    tag: 'h1',
+  },
+  {
+    children: [
+      {
+        detail: 0,
+        format: 0,
+        mode: 'normal',
+        style: '',
+        text: 'Gandalf! Get over here!',
+        type: 'text',
+        version: 1,
+      },
+    ],
+    direction: 'ltr',
+    format: '',
+    indent: 0,
+    type: 'paragraph',
+    version: 1,
+  },
+];
+
+const GotLost = [
+  {
+    children: [
+      {
+        detail: 0,
+        format: 0,
+        mode: 'normal',
+        style: '',
+        text: '3) Got lost',
+        type: 'text',
+        version: 1,
+      },
+    ],
+    direction: 'ltr',
+    format: '',
+    indent: 0,
+    type: 'heading',
+    version: 1,
+    tag: 'h1',
+  },
+  {
+    children: [
+      {
+        detail: 0,
+        format: 0,
+        mode: 'normal',
+        style: '',
+        text: 'This place I dont recognize',
+        type: 'text',
+        version: 1,
+      },
+    ],
+    direction: 'ltr',
+    format: '',
+    indent: 0,
+    type: 'paragraph',
+    version: 1,
+  },
+];
+
+const Ending = [
+  {
+    children: [
+      {
+        detail: 0,
+        format: 0,
+        mode: 'normal',
+        style: '',
+        text: '6) Bittersweet ending',
+        type: 'text',
+        version: 1,
+      },
+    ],
+    direction: 'ltr',
+    format: '',
+    indent: 0,
+    type: 'heading',
+    version: 1,
+    tag: 'h1',
+  },
+  {
+    children: [
+      {
+        detail: 0,
+        format: 0,
+        mode: 'normal',
+        style: '',
+        text: `I'm back, but I'm not the same person I was before`,
+        type: 'text',
+        version: 1,
+      },
+    ],
+    direction: 'ltr',
+    format: '',
+    indent: 0,
+    type: 'paragraph',
+    version: 1,
+  },
+];
+
 export const editorState = JSON.stringify({
   root: {
-    children: [...Beginning, ...Stay, ...Departure],
+    children: [
+      ...Beginning,
+      ...Departure,
+      ...Stay,
+      ...YoloSolo,
+      ...GetSomeHelp,
+      ...GotLost,
+      ...Ending,
+    ],
     direction: 'ltr',
     format: '',
     indent: 0,
