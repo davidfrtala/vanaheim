@@ -14,7 +14,7 @@ import {
 } from '@storytelly/components/ui';
 
 import Flow from '@storytelly/components/flow/Flow';
-const LazyComponent = lazy(() => import('../components/editor/Editor'));
+const Editor = lazy(() => import('../components/editor/Editor'));
 
 import flowStyle from 'reactflow/dist/style.css';
 import editorStyles from '../components/editor/editor.css';
@@ -24,7 +24,7 @@ export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: flowStyle },
 ];
 
-export default function Editor() {
+export default function Component() {
   return (
     <Suspense fallback={<p>Loading lazy chunk...</p>}>
       <div className="flex flex-wrap h-screen-minus-navbar -m-8 -mt-6">
@@ -87,7 +87,7 @@ export default function Editor() {
         </div>
         <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/2 xl:w-1/2 border-l border-r shadow-lg">
           <div className="h-full">
-            <LazyComponent />
+            <Editor />
           </div>
         </div>
         <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/3 xl:w-1/3">
