@@ -45,6 +45,11 @@ export default function Index() {
                   <NavLink to="/stories/pathway">Pathway</NavLink>
                 </NavigationMenuLink>
               </NavigationMenuItem>
+              <NavigationMenuItem>
+                <NavigationMenuLink>
+                  <NavLink to="/stories/read">Read</NavLink>
+                </NavigationMenuLink>
+              </NavigationMenuItem>
             </NavigationMenuList>
           </NavigationMenu>
 
