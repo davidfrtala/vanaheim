@@ -59,8 +59,8 @@ export function StoryPathProvider({ children }: { children: ReactNode }) {
         return;
       }
 
-      // If the clicked node is the last node in the path, remove it from the path
-      if (node.id === lastNodeInPath) {
+      // If the clicked node is the last node in the path (except root), remove it from the path
+      if (node.id === lastNodeInPath && path.length > 1) {
         setPath((prevPath) => prevPath.slice(0, -1));
         return;
       }
