@@ -3,7 +3,7 @@ import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { ContentEditable } from '@lexical/react/LexicalContentEditable';
 import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary';
 
-import { editorState } from '@storytelly/components/editor/chapters';
+import { editorState } from '@storytelly/components/narative/chapters';
 import { EditorProvider } from '@storytelly/components/editor/EditorProvider';
 import editorStyles from '../components/editor/editor.css';
 

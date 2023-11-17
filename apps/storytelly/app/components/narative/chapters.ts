@@ -1,4 +1,5 @@
-const Beginning = [
+import { toEditorState } from './utils';
+export const Beginning = [
   {
     children: [
       {
@@ -38,7 +39,7 @@ const Beginning = [
   },
 ];
 
-const Departure = [
+export const Departure = [
   {
     children: [
       {
@@ -78,7 +79,7 @@ const Departure = [
   },
 ];
 
-const Stay = [
+export const Stay = [
   {
     children: [
       {
@@ -118,7 +119,7 @@ const Stay = [
   },
 ];
 
-const YoloSolo = [
+export const YoloSolo = [
   {
     children: [
       {
@@ -158,7 +159,7 @@ const YoloSolo = [
   },
 ];
 
-const GetSomeHelp = [
+export const GetSomeHelp = [
   {
     children: [
       {
@@ -198,7 +199,7 @@ const GetSomeHelp = [
   },
 ];
 
-const GotLost = [
+export const GotLost = [
   {
     children: [
       {
@@ -238,7 +239,7 @@ const GotLost = [
   },
 ];
 
-const Ending = [
+export const Ending = [
   {
     children: [
       {
@@ -278,21 +279,12 @@ const Ending = [
   },
 ];
 
-export const editorState = JSON.stringify({
-  root: {
-    children: [
-      ...Beginning,
-      ...Departure,
-      ...Stay,
-      ...YoloSolo,
-      ...GetSomeHelp,
-      ...GotLost,
-      ...Ending,
-    ],
-    direction: 'ltr',
-    format: '',
-    indent: 0,
-    type: 'root',
-    version: 1,
-  },
-});
+export const editorState = toEditorState([
+  ...Beginning,
+  ...Departure,
+  ...Stay,
+  ...YoloSolo,
+  ...GetSomeHelp,
+  ...GotLost,
+  ...Ending,
+]);

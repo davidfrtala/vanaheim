@@ -1,79 +1,15 @@
-import Dagre from '@dagrejs/dagre';
-import { useCallback, useMemo, useState } from 'react';
-import ReactFlow, {
-  ReactFlowProvider,
-  Panel,
-  Controls,
-  Position,
-  Connection,
-  Background,
-  useNodesState,
-  useEdgesState,
-  ConnectionLineType,
-  addEdge,
-  Node,
-  Edge,
-  NodeMouseHandler,
-} from 'reactflow';
+import { useCallback, useMemo } from 'react';
+import { Node, Edge, NodeMouseHandler } from 'reactflow';
 
-import { Button } from '../ui';
-
-import {
-  initialNodes,
-  selectedNode,
-  initialEdges,
-  selectedEdge,
-} from './nodes-edges';
+import { useStoryPath } from '../narative/useStoryPath';
+import { useFlowLayout } from './useFlowLayout';
+import { Flow } from './FlowComponent';
+import { nodeStyle, nodeStyleSelected } from './selectedStyle';
 
 enum Orientation {
   horizontal = 'LR',
   vertical = 'TB',
 }
-
-const dagreGraph = new Dagre.graphlib.Graph();
-dagreGraph.setDefaultEdgeLabel(() => ({}));
-
-const nodeWidth = 172;
-const nodeHeight = 36;
-
-const edgesType: ConnectionLineType = ConnectionLineType.SimpleBezier;
-const getLayoutedElements = (
-  nodes: Node<any>[],
-  edges: Edge<any>[],
-  direction = Orientation.vertical
-) => {
-  const isHorizontal = direction === Orientation.horizontal;
-  dagreGraph.setGraph({ rankdir: direction });
-
-  nodes.forEach((node) => {
-    dagreGraph.setNode(node.id, { width: nodeWidth, height: nodeHeight });
-  });
-
-  edges.forEach((edge) => {
-    dagreGraph.setEdge(edge.source, edge.target);
-  });
-
-  Dagre.layout(dagreGraph);
-
-  nodes.forEach((node) => {
-    const nodeWithPosition = dagreGraph.node(node.id);
-    node.targetPosition = isHorizontal ? Position.Left : Position.Top;
-    node.sourcePosition = isHorizontal ? Position.Right : Position.Bottom;
-
-    // We are shifting the dagre node position (anchor=center center) to the top left
-    // so it matches the React Flow node anchor point (top left).
-    node.position = {
-      x: nodeWithPosition.x - nodeWidth / 2,
-      y: nodeWithPosition.y - nodeHeight / 2,
-    };
-
-    return node;
-  });
-
-  return { nodes, edges };
-};
-
-getLayoutedElements(initialNodes, initialEdges);
 
 const findEdgesInPath = (path: string[], edges: Edge[]): Edge[] => {
   const edgeMap = new Map(
@@ -95,88 +31,25 @@ const findEdgesInPath = (path: string[], edges: Edge[]): Edge[] => {
   return edgesInPath;
 };
 
-const LayoutFlow = () => {
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
-
-  // Find the root node
-  const rootNode = nodes.find(
-    (node) => !edges.some((edge) => edge.target === node.id)
-  );
-
-  // Initialize the path with the root node's id
-  const [path, setPath] = useState<string[]>(rootNode ? [rootNode.id] : []);
-  const pathSet = useMemo(() => new Set(path), [path]);
+export default function () {
+  const { addPath, path, pathSet, nodesState, edgesState } = useStoryPath();
+  const { onConnect, onLayout } = useFlowLayout();
+  const { nodes, onNodesChange } = nodesState;
+  const { edges, onEdgesChange } = edgesState;
 
   const onNodeClick = useCallback<NodeMouseHandler>(
     (_, node: Node) => {
-      const lastNodeInPath = path[path.length - 1];
-
-      const isParent = edges.some(
-        (edge) => edge.source === node.id && edge.target === lastNodeInPath
-      );
-
-      if (isParent) {
-        return;
-      }
-
-      // If the clicked node is the last node in the path, remove it from the path
-      if (node.id === lastNodeInPath) {
-        setPath((prevPath) => prevPath.slice(0, -1));
-        return;
-      }
-
-      // If the clicked node is already in the path, ignore the click
-      if (pathSet.has(node.id)) {
-        return;
-      }
-
-      const isConnected =
-        path.length === 0 ||
-        edges.some(
-          (edge) =>
-            (edge.source === lastNodeInPath && edge.target === node.id) ||
-            (edge.source === node.id && edge.target === lastNodeInPath)
-        );
-
-      // If the clicked node is connected to the last node in the path, append it to the path
-      if (isConnected) {
-        setPath((prevPath) => [...prevPath, node.id]);
-      }
+      addPath(node);
     },
-    [edges, path, pathSet, setPath]
-  );
-
-  const onConnect = useCallback(
-    (params: Edge | Connection) =>
-      setEdges((eds) =>
-        addEdge({ ...params, type: edgesType, animated: true }, eds)
-      ),
-    []
-  );
-
-  const onLayout = useCallback(
-    (direction: Orientation) => {
-      const { nodes: layoutedNodes, edges: layoutedEdges } =
-        getLayoutedElements(nodes, edges, direction);
-
-      setNodes([...layoutedNodes]);
-      setEdges([...layoutedEdges]);
-    },
-    [nodes, edges]
+    [addPath]
   );
 
   const updatedNodes = useMemo(
     () =>
-      nodes.map((node) => {
-        if (pathSet.has(node.id)) {
-          return {
-            ...node,
-            style: selectedNode.style,
-          };
-        }
-        return node;
-      }),
+      nodes.map((node) => ({
+        ...node,
+        style: pathSet.has(node.id) ? nodeStyleSelected : nodeStyle,
+      })),
     [nodes, pathSet]
   );
 
@@ -188,60 +61,23 @@ const LayoutFlow = () => {
 
   const updatedEdges = useMemo(
     () =>
-      edges.map((edge) => {
-        if (edgesInPathSet.has(edge.id)) {
-          return {
-            ...edge,
-            ...selectedEdge,
-          };
-        }
-        return edge;
-      }),
+      edges.map((edge) => ({
+        ...edge,
+        animated: edgesInPathSet.has(edge.id),
+      })),
     [edges, edgesInPathSet]
   );
 
   return (
-    <ReactFlow
+    <Flow
       nodes={updatedNodes}
       edges={updatedEdges}
       onNodesChange={onNodesChange}
       onEdgesChange={onEdgesChange}
       onNodeClick={onNodeClick}
       onConnect={onConnect}
-      connectionLineType={edgesType}
-      // remove this after we subscribe to React Flow, once we start making shit tons of money :o)))
-      proOptions={{ hideAttribution: true }}
-      defaultEdgeOptions={{
-        type: edgesType,
-      }}
-      fitView
-      snapToGrid
-    >
-      <Panel position="top-right">
-        <Button
-          variant="outline"
-          onClick={() => onLayout(Orientation.vertical)}
-        >
-          vertical layout
-        </Button>
-        <Button
-          variant="outline"
-          onClick={() => onLayout(Orientation.horizontal)}
-        >
-          horizontal layout
-        </Button>
-      </Panel>
-
-      <Background color="hsl(var(--foreground))" gap={30} />
-      <Controls position="top-left" />
-    </ReactFlow>
-  );
-};
-
-export default function () {
-  return (
-    <ReactFlowProvider>
-      <LayoutFlow />
-    </ReactFlowProvider>
+      onVerticalClick={() => onLayout(Orientation.vertical)}
+      onHorizontalClick={() => onLayout(Orientation.horizontal)}
+    />
   );
 }
