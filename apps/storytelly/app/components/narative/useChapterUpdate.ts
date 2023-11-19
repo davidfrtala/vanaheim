@@ -2,17 +2,7 @@ import { useEffect } from 'react';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { toEditorState } from './utils';
 import { useStoryPath } from './useStoryPath';
-import * as chapters from './chapters';
-
-const chaptersMap: Record<string, object[]> = {
-  '0': chapters.Beginning,
-  '1': chapters.Departure,
-  '2': chapters.Stay,
-  '3': chapters.YoloSolo,
-  '4': chapters.GetSomeHelp,
-  '5': chapters.GotLost,
-  '6': chapters.Ending,
-};
+import { initialNodes as nodes } from './nodes-edges';
 
 export function useChapterUpdate() {
   const { path } = useStoryPath();
@@ -20,9 +10,9 @@ export function useChapterUpdate() {
 
   useEffect(() => {
     const chapters = path.reduce<object[]>((acc, chapter) => {
-      const chapterContent = chaptersMap.hasOwnProperty(chapter)
-        ? chaptersMap[`${chapter}`]
-        : null;
+      const chapterContent = nodes.find((node) => node.id === chapter)?.data
+        .chapter;
+
       if (chapterContent) {
         return acc.concat(...chapterContent);
       }

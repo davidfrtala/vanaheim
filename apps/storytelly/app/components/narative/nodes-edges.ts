@@ -1,4 +1,5 @@
 import type { Node, Edge } from 'reactflow';
+import * as chapters from './chapters';
 
 const position = { x: 0, y: 0 };
 
@@ -6,40 +7,36 @@ export const initialNodes: Node[] = [
   {
     id: '0',
     type: 'input',
-    data: { label: '0) Beginning' },
-    position,
+    data: { label: 'Beginning', chapter: chapters.Beginning },
   },
   {
     id: '1',
-    data: { label: '1) Departure' },
-    position,
+    data: { label: 'Departure', chapter: chapters.Departure },
   },
   {
     id: '2',
-    data: { label: '2) Stay at home' },
-    position,
+    data: { label: 'Stay at home', chapter: chapters.Stay },
   },
   {
     id: '3',
-    data: { label: '3) Got lost' },
-    position,
+    data: { label: 'Got lost', chapter: chapters.GotLost },
   },
   {
     id: '4',
-    data: { label: '4) Get some help' },
-    position,
+    data: { label: 'Get some help', chapter: chapters.GetSomeHelp },
   },
   {
     id: '5',
-    data: { label: '5) Yolo Solo' },
-    position,
+    data: { label: 'Yolo Solo', chapter: chapters.YoloSolo },
   },
   {
     id: '6',
-    data: { label: '6) Bittersweet ending' },
-    position,
+    data: { label: 'Bittersweet ending', chapter: chapters.Ending },
   },
-];
+].map((node) => ({
+  ...node,
+  position,
+}));
 
 export const initialEdges: Edge[] = [
   { id: 'a', source: '0', target: '1' },

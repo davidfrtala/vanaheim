@@ -24,7 +24,9 @@ export default function Component() {
         <EditorProvider config={editorConfig}>
           <RichTextPlugin
             placeholder={<></>}
-            contentEditable={<ContentEditable className="editor-input" />}
+            contentEditable={
+              <ContentEditable className="editor-input" readOnly />
+            }
             ErrorBoundary={LexicalErrorBoundary}
           />
         </EditorProvider>
