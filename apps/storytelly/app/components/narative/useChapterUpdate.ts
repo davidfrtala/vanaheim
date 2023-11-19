@@ -14,7 +14,7 @@ export function useChapterUpdate() {
         .chapter;
 
       if (chapterContent) {
-        return acc.concat(...chapterContent);
+        return acc.concat(chapterContent);
       }
       return acc;
     }, []);
