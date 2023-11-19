@@ -6,6 +6,10 @@ import {
 import { HeadingNode, QuoteNode } from '@lexical/rich-text';
 import ExampleTheme from './theme';
 
+import { CollapsibleContainerNode } from './plugins/CollapsiblePlugin/CollapsibleContainerNode';
+import { CollapsibleContentNode } from './plugins/CollapsiblePlugin/CollapsibleContentNode';
+import { CollapsibleTitleNode } from './plugins/CollapsiblePlugin/CollapsibleTitleNode';
+
 const editorConfig = {
   // The editor theme
   theme: ExampleTheme,
@@ -14,7 +18,13 @@ const editorConfig = {
     throw error;
   },
   // Any custom nodes go here
-  nodes: [HeadingNode, QuoteNode],
+  nodes: [
+    HeadingNode,
+    QuoteNode,
+    CollapsibleContainerNode,
+    CollapsibleContentNode,
+    CollapsibleTitleNode,
+  ],
 };
 
 export const EditorProvider: FC<{

@@ -9,6 +9,7 @@ import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary';
 import TreeViewPlugin from './plugins/TreeViewPlugin';
 import ToolbarPlugin from './plugins/ToolbarPlugin';
 import ListMaxIndentLevelPlugin from './plugins/ListMaxIndentLevelPlugin';
+import CollapsiblePlugin from './plugins/CollapsiblePlugin';
 
 function Placeholder() {
   return <div className="editor-placeholder">Enter some rich text...</div>;
@@ -38,9 +39,10 @@ export default function Editor() {
       <HistoryPlugin />
       <AutoFocusPlugin />
       <ListMaxIndentLevelPlugin maxDepth={7} />
+      <CollapsiblePlugin />
 
       <OnChangePlugin onChange={onChange} />
-      {/* <TreeViewPlugin /> */}
+      <TreeViewPlugin />
     </div>
   );
 }

@@ -1,5 +1,5 @@
-import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import {
   CAN_REDO_COMMAND,
   CAN_UNDO_COMMAND,
@@ -13,6 +13,7 @@ import {
   $createParagraphNode,
   $getNodeByKey,
 } from 'lexical';
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { $isLinkNode, TOGGLE_LINK_COMMAND } from '@lexical/link';
 import {
   $isParentElementRTL,
@@ -27,7 +28,6 @@ import {
   $isListNode,
   ListNode,
 } from '@lexical/list';
-import { createPortal } from 'react-dom';
 import {
   $createHeadingNode,
   $createQuoteNode,
@@ -40,6 +40,8 @@ import {
   getCodeLanguages,
 } from '@lexical/code';
 
+import { INSERT_COLLAPSIBLE_COMMAND } from './CollapsiblePlugin';
+
 import {
   ChevronDownIcon,
   FontItalicIcon,
@@ -51,7 +53,9 @@ import {
   TextAlignRightIcon,
   TextAlignJustifyIcon,
   ReloadIcon,
+  ContainerIcon,
 } from '@radix-ui/react-icons';
+
 import { Button } from '@storytelly/components/ui';
 
 const LowPriority = 1;
@@ -711,7 +715,18 @@ export default function ToolbarPlugin() {
             aria-label="Justify Align"
           >
             <TextAlignJustifyIcon className="h-4 w-4" />
-          </Button>{' '}
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => {
+              editor.dispatchCommand(INSERT_COLLAPSIBLE_COMMAND, undefined);
+            }}
+            className="toolbar-item"
+            aria-label="Container"
+          >
+            <ContainerIcon className="h-4 w-4" />
+          </Button>
         </>
       )}
     </div>
