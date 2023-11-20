@@ -40,7 +40,7 @@ import {
   getCodeLanguages,
 } from '@lexical/code';
 
-import { INSERT_COLLAPSIBLE_COMMAND } from './CollapsiblePlugin';
+import { INSERT_CHAPTER_COMMAND } from './ChapterPlugin';
 
 import {
   ChevronDownIcon,
@@ -720,7 +720,7 @@ export default function ToolbarPlugin() {
             variant="ghost"
             size="icon"
             onClick={() => {
-              editor.dispatchCommand(INSERT_COLLAPSIBLE_COMMAND, undefined);
+              editor.dispatchCommand(INSERT_CHAPTER_COMMAND, undefined);
             }}
             className="toolbar-item"
             aria-label="Container"

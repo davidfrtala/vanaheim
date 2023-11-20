@@ -1,11 +1,3 @@
-/**
- * Copyright (c) Meta Platforms, Inc. and affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- */
-
 import {
   $createParagraphNode,
   $isElementNode,
@@ -20,36 +12,36 @@ import {
   SerializedElementNode,
 } from 'lexical';
 
-import { $isCollapsibleContainerNode } from './CollapsibleContainerNode';
-import { $isCollapsibleContentNode } from './CollapsibleContentNode';
+import { $isChapterContainerNode } from './ChapterContainerNode';
+import { $isChapterContentNode } from './ChapterContentNode';
 
-type SerializedCollapsibleTitleNode = SerializedElementNode;
+type SerializedChapterTitleNode = SerializedElementNode;
 
 export function convertSummaryElement(
   domNode: HTMLElement
 ): DOMConversionOutput | null {
-  const node = $createCollapsibleTitleNode();
+  const node = $createChapterTitleNode();
   return {
     node,
   };
 }
 
-export class CollapsibleTitleNode extends ElementNode {
+export class ChapterTitleNode extends ElementNode {
   static getType(): string {
-    return 'collapsible-title';
+    return 'chapter-title';
   }
 
-  static clone(node: CollapsibleTitleNode): CollapsibleTitleNode {
-    return new CollapsibleTitleNode(node.__key);
+  static clone(node: ChapterTitleNode): ChapterTitleNode {
+    return new ChapterTitleNode(node.__key);
   }
 
   createDOM(config: EditorConfig, editor: LexicalEditor): HTMLElement {
-    const dom = document.createElement('h3');
-    dom.classList.add('Collapsible__title');
+    const dom = document.createElement('summary');
+    dom.classList.add('Chapter__title');
     return dom;
   }
 
-  updateDOM(prevNode: CollapsibleTitleNode, dom: HTMLElement): boolean {
+  updateDOM(prevNode: ChapterTitleNode, dom: HTMLElement): boolean {
     return false;
   }
 
@@ -65,20 +57,20 @@ export class CollapsibleTitleNode extends ElementNode {
   }
 
   static importJSON(
-    serializedNode: SerializedCollapsibleTitleNode
-  ): CollapsibleTitleNode {
-    return $createCollapsibleTitleNode();
+    serializedNode: SerializedChapterTitleNode
+  ): ChapterTitleNode {
+    return $createChapterTitleNode();
   }
 
   exportDOM(): DOMExportOutput {
-    const element = document.createElement('h3');
+    const element = document.createElement('summary');
     return { element };
   }
 
-  exportJSON(): SerializedCollapsibleTitleNode {
+  exportJSON(): SerializedChapterTitleNode {
     return {
       ...super.exportJSON(),
-      type: 'collapsible-title',
+      type: 'chapter-title',
       version: 1,
     };
   }
@@ -91,16 +83,16 @@ export class CollapsibleTitleNode extends ElementNode {
   insertNewAfter(_: RangeSelection, restoreSelection = true): ElementNode {
     const containerNode = this.getParentOrThrow();
 
-    if (!$isCollapsibleContainerNode(containerNode)) {
+    if (!$isChapterContainerNode(containerNode)) {
       throw new Error(
-        'CollapsibleTitleNode expects to be child of CollapsibleContainerNode'
+        'ChapterTitleNode expects to be child of ChapterContainerNode'
       );
     }
 
     const contentNode = this.getNextSibling();
-    if (!$isCollapsibleContentNode(contentNode)) {
+    if (!$isChapterContentNode(contentNode)) {
       throw new Error(
-        'CollapsibleTitleNode expects to have CollapsibleContentNode sibling'
+        'ChapterTitleNode expects to have ChapterContentNode sibling'
       );
     }
 
@@ -115,12 +107,12 @@ export class CollapsibleTitleNode extends ElementNode {
   }
 }
 
-export function $createCollapsibleTitleNode(): CollapsibleTitleNode {
-  return new CollapsibleTitleNode();
+export function $createChapterTitleNode(): ChapterTitleNode {
+  return new ChapterTitleNode();
 }
 
-export function $isCollapsibleTitleNode(
+export function $isChapterTitleNode(
   node: LexicalNode | null | undefined
-): node is CollapsibleTitleNode {
-  return node instanceof CollapsibleTitleNode;
+): node is ChapterTitleNode {
+  return node instanceof ChapterTitleNode;
 }

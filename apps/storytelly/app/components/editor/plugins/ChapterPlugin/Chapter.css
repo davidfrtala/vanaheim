@@ -1,0 +1,18 @@
+ .Chapter__container {
+  border: 1px dashed hsl(var(--border));
+  border-radius: var(--radius);
+  margin-bottom: 8px;
+}
+
+.Chapter__title {
+  padding: 5px 5px 5px 20px;
+  position: relative;
+  font-weight: bold;
+  list-style: none;
+  outline: none;
+}
+
+
+.Chapter__content {
+  padding: 0 5px 5px 20px;
+}

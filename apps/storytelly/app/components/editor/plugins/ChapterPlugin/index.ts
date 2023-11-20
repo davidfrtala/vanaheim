@@ -30,43 +30,41 @@ import {
   KEY_ARROW_RIGHT_COMMAND,
   KEY_ARROW_UP_COMMAND,
   LexicalNode,
-  NodeKey,
 } from 'lexical';
 
 import {
-  $createCollapsibleContainerNode,
-  $isCollapsibleContainerNode,
-  CollapsibleContainerNode,
-} from './CollapsibleContainerNode';
+  $createChapterContainerNode,
+  $isChapterContainerNode,
+  ChapterContainerNode,
+} from './ChapterContainerNode';
 import {
-  $createCollapsibleContentNode,
-  $isCollapsibleContentNode,
-  CollapsibleContentNode,
-} from './CollapsibleContentNode';
+  $createChapterContentNode,
+  $isChapterContentNode,
+  ChapterContentNode,
+} from './ChapterContentNode';
 import {
-  $createCollapsibleTitleNode,
-  $isCollapsibleTitleNode,
-  CollapsibleTitleNode,
-} from './CollapsibleTitleNode';
+  $createChapterTitleNode,
+  $isChapterTitleNode,
+  ChapterTitleNode,
+} from './ChapterTitleNode';
 
-import './Collapsible.css';
+import './Chapter.css';
 
-export const INSERT_COLLAPSIBLE_COMMAND = createCommand<void>();
-export const TOGGLE_COLLAPSIBLE_COMMAND = createCommand<NodeKey>();
+export const INSERT_CHAPTER_COMMAND = createCommand<void>();
 
-export default function CollapsiblePlugin(): null {
+export default function ChapterPlugin(): null {
   const [editor] = useLexicalComposerContext();
 
   useEffect(() => {
     if (
       !editor.hasNodes([
-        CollapsibleContainerNode,
-        CollapsibleTitleNode,
-        CollapsibleContentNode,
+        ChapterContainerNode,
+        ChapterTitleNode,
+        ChapterContentNode,
       ])
     ) {
       throw new Error(
-        'CollapsiblePlugin: CollapsibleContainerNode, CollapsibleTitleNode, or CollapsibleContentNode not registered on editor'
+        'ChapterPlugin: ChapterContainerNode, ChapterTitleNode, or ChapterContentNode not registered on editor'
       );
     }
 
@@ -79,10 +77,10 @@ export default function CollapsiblePlugin(): null {
       ) {
         const container = $findMatchingParent(
           selection.anchor.getNode(),
-          $isCollapsibleContainerNode
+          $isChapterContainerNode
         );
 
-        if ($isCollapsibleContainerNode(container)) {
+        if ($isChapterContainerNode(container)) {
           const parent = container.getParent<ElementNode>();
           if (
             parent !== null &&
@@ -103,10 +101,10 @@ export default function CollapsiblePlugin(): null {
       if ($isRangeSelection(selection) && selection.isCollapsed()) {
         const container = $findMatchingParent(
           selection.anchor.getNode(),
-          $isCollapsibleContainerNode
+          $isChapterContainerNode
         );
 
-        if ($isCollapsibleContainerNode(container)) {
+        if ($isChapterContainerNode(container)) {
           const parent = container.getParent<ElementNode>();
           if (
             parent !== null &&
@@ -131,9 +129,9 @@ export default function CollapsiblePlugin(): null {
       // Structure enforcing transformers for each node type. In case nesting structure is not
       // "Container > Title + Content" it'll unwrap nodes and convert it back
       // to regular content.
-      editor.registerNodeTransform(CollapsibleContentNode, (node) => {
+      editor.registerNodeTransform(ChapterContentNode, (node) => {
         const parent = node.getParent<ElementNode>();
-        if (!$isCollapsibleContainerNode(parent)) {
+        if (!$isChapterContainerNode(parent)) {
           const children = node.getChildren<LexicalNode>();
           for (const child of children) {
             node.insertBefore(child);
@@ -142,9 +140,9 @@ export default function CollapsiblePlugin(): null {
         }
       }),
 
-      editor.registerNodeTransform(CollapsibleTitleNode, (node) => {
+      editor.registerNodeTransform(ChapterTitleNode, (node) => {
         const parent = node.getParent<ElementNode>();
-        if (!$isCollapsibleContainerNode(parent)) {
+        if (!$isChapterContainerNode(parent)) {
           node.replace(
             $createParagraphNode().append(...node.getChildren<LexicalNode>())
           );
@@ -152,12 +150,12 @@ export default function CollapsiblePlugin(): null {
         }
       }),
 
-      editor.registerNodeTransform(CollapsibleContainerNode, (node) => {
+      editor.registerNodeTransform(ChapterContainerNode, (node) => {
         const children = node.getChildren<LexicalNode>();
         if (
           children.length !== 2 ||
-          !$isCollapsibleTitleNode(children[0]) ||
-          !$isCollapsibleContentNode(children[1])
+          !$isChapterTitleNode(children[0]) ||
+          !$isChapterContentNode(children[1])
         ) {
           for (const child of children) {
             node.insertBefore(child);
@@ -189,7 +187,7 @@ export default function CollapsiblePlugin(): null {
           }
 
           const container = topLevelElement.getPreviousSibling<LexicalNode>();
-          if (!$isCollapsibleContainerNode(container)) {
+          if (!$isChapterContainerNode(container)) {
             return false;
           }
 
@@ -249,9 +247,9 @@ export default function CollapsiblePlugin(): null {
                 (node) => $isElementNode(node) && !node.isInline()
               );
 
-              if ($isCollapsibleTitleNode(parent)) {
+              if ($isChapterTitleNode(parent)) {
                 const container = parent.getParent<ElementNode>();
-                if ($isCollapsibleContainerNode(container)) {
+                if ($isChapterContainerNode(container)) {
                   $setSelection(selection.clone());
                   return true;
                 }
@@ -264,14 +262,14 @@ export default function CollapsiblePlugin(): null {
         COMMAND_PRIORITY_LOW
       ),
       editor.registerCommand(
-        INSERT_COLLAPSIBLE_COMMAND,
+        INSERT_CHAPTER_COMMAND,
         () => {
           editor.update(() => {
-            const title = $createCollapsibleTitleNode();
+            const title = $createChapterTitleNode();
             $insertNodeToNearestRoot(
-              $createCollapsibleContainerNode().append(
+              $createChapterContainerNode().append(
                 title,
-                $createCollapsibleContentNode().append($createParagraphNode())
+                $createChapterContentNode().append($createParagraphNode())
               )
             );
             title.select();
