@@ -53,7 +53,6 @@ export const Beginning = {
   indent: 0,
   type: 'collapsible-container',
   version: 1,
-  open: true,
 };
 
 export const Departure = {
@@ -109,7 +108,6 @@ export const Departure = {
   indent: 0,
   type: 'collapsible-container',
   version: 1,
-  open: true,
 };
 
 export const Stay = {
@@ -165,7 +163,6 @@ export const Stay = {
   indent: 0,
   type: 'collapsible-container',
   version: 1,
-  open: true,
 };
 
 export const YoloSolo = {
@@ -221,7 +218,6 @@ export const YoloSolo = {
   indent: 0,
   type: 'collapsible-container',
   version: 1,
-  open: true,
 };
 
 export const GetSomeHelp = {
@@ -277,7 +273,6 @@ export const GetSomeHelp = {
   indent: 0,
   type: 'collapsible-container',
   version: 1,
-  open: true,
 };
 
 export const GotLost = {
@@ -333,7 +328,6 @@ export const GotLost = {
   indent: 0,
   type: 'collapsible-container',
   version: 1,
-  open: true,
 };
 
 export const Ending = {
@@ -389,7 +383,6 @@ export const Ending = {
   indent: 0,
   type: 'collapsible-container',
   version: 1,
-  open: true,
 };
 
 export const editorState = toEditorState([

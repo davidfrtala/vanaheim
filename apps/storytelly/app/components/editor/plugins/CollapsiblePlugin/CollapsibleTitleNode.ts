@@ -44,7 +44,7 @@ export class CollapsibleTitleNode extends ElementNode {
   }
 
   createDOM(config: EditorConfig, editor: LexicalEditor): HTMLElement {
-    const dom = document.createElement('summary');
+    const dom = document.createElement('h3');
     dom.classList.add('Collapsible__title');
     return dom;
   }
@@ -71,7 +71,7 @@ export class CollapsibleTitleNode extends ElementNode {
   }
 
   exportDOM(): DOMExportOutput {
-    const element = document.createElement('summary');
+    const element = document.createElement('h3');
     return { element };
   }
 
@@ -97,25 +97,19 @@ export class CollapsibleTitleNode extends ElementNode {
       );
     }
 
-    if (containerNode.getOpen()) {
-      const contentNode = this.getNextSibling();
-      if (!$isCollapsibleContentNode(contentNode)) {
-        throw new Error(
-          'CollapsibleTitleNode expects to have CollapsibleContentNode sibling'
-        );
-      }
+    const contentNode = this.getNextSibling();
+    if (!$isCollapsibleContentNode(contentNode)) {
+      throw new Error(
+        'CollapsibleTitleNode expects to have CollapsibleContentNode sibling'
+      );
+    }
 
-      const firstChild = contentNode.getFirstChild();
-      if ($isElementNode(firstChild)) {
-        return firstChild;
-      } else {
-        const paragraph = $createParagraphNode();
-        contentNode.append(paragraph);
-        return paragraph;
-      }
+    const firstChild = contentNode.getFirstChild();
+    if ($isElementNode(firstChild)) {
+      return firstChild;
     } else {
       const paragraph = $createParagraphNode();
-      containerNode.insertAfter(paragraph, restoreSelection);
+      contentNode.append(paragraph);
       return paragraph;
     }
   }

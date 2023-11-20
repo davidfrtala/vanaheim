@@ -5,8 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  *
  */
-
-import './Collapsible.css';
+import { useEffect } from 'react';
 
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import {
@@ -33,7 +32,6 @@ import {
   LexicalNode,
   NodeKey,
 } from 'lexical';
-import { useEffect } from 'react';
 
 import {
   $createCollapsibleContainerNode,
@@ -50,6 +48,8 @@ import {
   $isCollapsibleTitleNode,
   CollapsibleTitleNode,
 } from './CollapsibleTitleNode';
+
+import './Collapsible.css';
 
 export const INSERT_COLLAPSIBLE_COMMAND = createCommand<void>();
 export const TOGGLE_COLLAPSIBLE_COMMAND = createCommand<NodeKey>();
@@ -189,11 +189,10 @@ export default function CollapsiblePlugin(): null {
           }
 
           const container = topLevelElement.getPreviousSibling<LexicalNode>();
-          if (!$isCollapsibleContainerNode(container) || container.getOpen()) {
+          if (!$isCollapsibleContainerNode(container)) {
             return false;
           }
 
-          container.setOpen(true);
           return true;
         },
         COMMAND_PRIORITY_LOW
@@ -253,7 +252,6 @@ export default function CollapsiblePlugin(): null {
               if ($isCollapsibleTitleNode(parent)) {
                 const container = parent.getParent<ElementNode>();
                 if ($isCollapsibleContainerNode(container)) {
-                  container.toggleOpen();
                   $setSelection(selection.clone());
                   return true;
                 }
@@ -271,7 +269,7 @@ export default function CollapsiblePlugin(): null {
           editor.update(() => {
             const title = $createCollapsibleTitleNode();
             $insertNodeToNearestRoot(
-              $createCollapsibleContainerNode(true).append(
+              $createCollapsibleContainerNode().append(
                 title,
                 $createCollapsibleContentNode().append($createParagraphNode())
               )

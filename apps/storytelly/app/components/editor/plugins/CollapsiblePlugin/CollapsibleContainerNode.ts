@@ -16,32 +16,22 @@ import {
   LexicalNode,
   NodeKey,
   SerializedElementNode,
-  Spread,
 } from 'lexical';
 
-type SerializedCollapsibleContainerNode = Spread<
-  {
-    open: boolean;
-  },
-  SerializedElementNode
->;
+type SerializedCollapsibleContainerNode = SerializedElementNode;
 
 export function convertDetailsElement(
   domNode: HTMLDetailsElement
 ): DOMConversionOutput | null {
-  const isOpen = domNode.open !== undefined ? domNode.open : true;
-  const node = $createCollapsibleContainerNode(isOpen);
+  const node = $createCollapsibleContainerNode();
   return {
     node,
   };
 }
 
 export class CollapsibleContainerNode extends ElementNode {
-  __open: boolean;
-
-  constructor(open: boolean, key?: NodeKey) {
+  constructor(key?: NodeKey) {
     super(key);
-    this.__open = open;
   }
 
   static getType(): string {
@@ -49,19 +39,12 @@ export class CollapsibleContainerNode extends ElementNode {
   }
 
   static clone(node: CollapsibleContainerNode): CollapsibleContainerNode {
-    return new CollapsibleContainerNode(node.__open, node.__key);
+    return new CollapsibleContainerNode(node.__key);
   }
 
   createDOM(config: EditorConfig, editor: LexicalEditor): HTMLElement {
-    const dom = document.createElement('details');
+    const dom = document.createElement('section');
     dom.classList.add('Collapsible__container');
-    dom.open = this.__open;
-    dom.addEventListener('toggle', () => {
-      const open = editor.getEditorState().read(() => this.getOpen());
-      if (open !== dom.open) {
-        editor.update(() => this.toggleOpen());
-      }
-    });
     return dom;
   }
 
@@ -69,16 +52,12 @@ export class CollapsibleContainerNode extends ElementNode {
     prevNode: CollapsibleContainerNode,
     dom: HTMLDetailsElement
   ): boolean {
-    if (prevNode.__open !== this.__open) {
-      dom.open = this.__open;
-    }
-
     return false;
   }
 
   static importDOM(): DOMConversionMap<HTMLDetailsElement> | null {
     return {
-      details: (domNode: HTMLDetailsElement) => {
+      section: (domNode: HTMLDetailsElement) => {
         return {
           conversion: convertDetailsElement,
           priority: 1,
@@ -90,43 +69,25 @@ export class CollapsibleContainerNode extends ElementNode {
   static importJSON(
     serializedNode: SerializedCollapsibleContainerNode
   ): CollapsibleContainerNode {
-    const node = $createCollapsibleContainerNode(serializedNode.open);
-    return node;
+    return $createCollapsibleContainerNode();
   }
 
   exportDOM(): DOMExportOutput {
-    const element = document.createElement('details');
-    element.setAttribute('open', this.__open.toString());
+    const element = document.createElement('section');
     return { element };
   }
 
   exportJSON(): SerializedCollapsibleContainerNode {
     return {
       ...super.exportJSON(),
-      open: this.__open,
       type: 'collapsible-container',
       version: 1,
     };
   }
-
-  setOpen(open: boolean): void {
-    const writable = this.getWritable();
-    writable.__open = open;
-  }
-
-  getOpen(): boolean {
-    return this.getLatest().__open;
-  }
-
-  toggleOpen(): void {
-    this.setOpen(!this.getOpen());
-  }
 }
 
-export function $createCollapsibleContainerNode(
-  isOpen: boolean
-): CollapsibleContainerNode {
-  return new CollapsibleContainerNode(isOpen);
+export function $createCollapsibleContainerNode(): CollapsibleContainerNode {
+  return new CollapsibleContainerNode();
 }
 
 export function $isCollapsibleContainerNode(
