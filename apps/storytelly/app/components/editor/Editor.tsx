@@ -8,6 +8,7 @@ import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary';
 
 import TreeViewPlugin from './plugins/TreeViewPlugin';
 import ToolbarPlugin from './plugins/ToolbarPlugin';
+import FloatingTextFormatToolbarPlugin from './plugins/FloatingTextFormatToolbarPlugin';
 import ListMaxIndentLevelPlugin from './plugins/ListMaxIndentLevelPlugin';
 import ChapterPlugin from './plugins/ChapterPlugin';
 
@@ -40,6 +41,7 @@ export default function Editor() {
       <AutoFocusPlugin />
       <ListMaxIndentLevelPlugin maxDepth={7} />
       <ChapterPlugin />
+      <FloatingTextFormatToolbarPlugin />
 
       <OnChangePlugin onChange={onChange} />
       <TreeViewPlugin />
