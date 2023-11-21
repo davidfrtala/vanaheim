@@ -13,7 +13,11 @@ import ListMaxIndentLevelPlugin from './plugins/ListMaxIndentLevelPlugin';
 import ChapterPlugin from './plugins/ChapterPlugin';
 
 function Placeholder() {
-  return <div className="editor-placeholder">Enter some rich text...</div>;
+  return (
+    <div className="editor-placeholder">
+      <p>Start writing your story</p>
+    </div>
+  );
 }
 
 // When the editor changes, you can get notified via the

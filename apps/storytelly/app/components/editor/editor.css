@@ -17,6 +17,14 @@
   outline: 0;
   padding: 3rem 5rem;
 }
+.editor-input p {
+  line-height: 2rem;
+  font-size: 1.25rem;
+}
+.editor-input summary {
+  font-size: .75rem;
+  color: hsl(var(--muted-foreground));
+}
 
 .editor-placeholder {
   top: 44px;
@@ -26,7 +34,7 @@
   position: absolute;
   text-overflow: ellipsis;
   padding: 3rem 5rem;
-  font-size: 15px;
+  font-size: 1.25rem;
   user-select: none;
   display: inline-block;
   pointer-events: none;
