@@ -1,0 +1,52 @@
+
+.component-picker ul {
+  padding: 0;
+  list-style: none;
+  margin: 0;
+  max-height: 252px;
+  overflow-y: scroll;
+}
+
+.component-picker ul::-webkit-scrollbar {
+  display: none;
+}
+
+.component-picker ul {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.component-picker ul li {
+  margin: 0;
+  min-width: 180px;
+  font-size: 14px;
+  outline: none;
+  cursor: pointer;
+}
+
+
+.component-picker li {
+  margin: 0 8px 0 8px;
+  padding: 8px;
+  cursor: pointer;
+  line-height: 16px;
+  font-size: 15px;
+  display: flex;
+  align-content: center;
+  flex-direction: row;
+  flex-shrink: 0;
+}
+
+.component-picker li.active {
+  display: flex;
+  width: 20px;
+  height: 20px;
+  background-size: contain;
+}
+
+.component-picker li .text {
+  display: flex;
+  line-height: 20px;
+  flex-grow: 1;
+  min-width: 150px;
+}

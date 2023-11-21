@@ -6,16 +6,17 @@ import { AutoFocusPlugin } from '@lexical/react/LexicalAutoFocusPlugin';
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
 import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary';
 
-import TreeViewPlugin from './plugins/TreeViewPlugin';
-import ToolbarPlugin from './plugins/ToolbarPlugin';
+import ComponentPickerPlugin from './plugins/ComponentPickerPlugin';
 import FloatingTextFormatToolbarPlugin from './plugins/FloatingTextFormatToolbarPlugin';
 import ListMaxIndentLevelPlugin from './plugins/ListMaxIndentLevelPlugin';
 import ChapterPlugin from './plugins/ChapterPlugin';
+import TreeViewPlugin from './plugins/TreeViewPlugin';
 
 function Placeholder() {
   return (
     <div className="editor-placeholder">
       <p>Start writing your story</p>
+      <p className="text-xs">or type "/" to bring the action menu</p>
     </div>
   );
 }
@@ -35,7 +36,6 @@ function onChange(editorState: EditorState) {
 export default function Editor() {
   return (
     <div className="relative">
-      <ToolbarPlugin />
       <RichTextPlugin
         contentEditable={<ContentEditable className="editor-input" />}
         placeholder={<Placeholder />}
@@ -45,10 +45,11 @@ export default function Editor() {
       <AutoFocusPlugin />
       <ListMaxIndentLevelPlugin maxDepth={7} />
       <ChapterPlugin />
+      <ComponentPickerPlugin />
       <FloatingTextFormatToolbarPlugin />
 
       <OnChangePlugin onChange={onChange} />
-      <TreeViewPlugin />
+      {/* <TreeViewPlugin /> */}
     </div>
   );
 }

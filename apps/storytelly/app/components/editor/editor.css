@@ -27,7 +27,7 @@
 }
 
 .editor-placeholder {
-  top: 44px;
+  top: 0px;
   left: 0px;
   color: hsl(var(--muted-foreground));
   overflow: hidden;
